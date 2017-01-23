@@ -2,26 +2,6 @@ import locals from './locals.js'
 import display from './display.js'
 import event from './event.js'
 
-Sk.externalLibraries = Sk.externalLibraries || {};
-
-Object.assign(Sk.externalLibraries, {
-  pygame: {
-    path: '../../../pygame.sk/skulpt_module/__init__.js',
-    dependencies: [
-      '../../../pygame.sk/pygame.js'
-    ]
-  },
-  "pygame.locals": {
-    path: '../../../pygame.sk/skulpt_module/locals.js'
-  },
-  "pygame.display": {
-    path: '../../../pygame.sk/skulpt_module/display.js'
-  },
-  "pygame.event": {
-    path: '../../../pygame.sk/skulpt_module/event.js'
-  }
-});
-
 function remapInner(obj) {
   var res = {};
   for (var x in obj) {
@@ -43,6 +23,24 @@ function assign(target, source) {
 }
 
 export default {
+  init(path) {
+    Sk.externalLibraries = Sk.externalLibraries || {};
+
+    Object.assign(Sk.externalLibraries, {
+      pygame: {
+        path:`${path}/__init__.js`,
+      },
+      "pygame.locals": {
+        path: `${path}/locals.js`
+      },
+      "pygame.display": {
+        path: `${path}/display.js`
+      },
+      "pygame.event": {
+        path: `${path}/event.js`
+      }
+    });
+  },
   main(name) {
     return remapInner(assign({
       init() {

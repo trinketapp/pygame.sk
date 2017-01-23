@@ -29,7 +29,7 @@ export default {
       promise: new Promise(fulfill, reject) {
 
       }
-    }
+    };
     return susp;
   },
   'EventType': notImplemented,
