@@ -1,8 +1,21 @@
 import { notImplemented, dud, toBeImplemented } from './shared.js'
+import Event from './eventclass.js'
 
-window.addEventListener("keypress", function(event) {
+const queue = [];
+const notifiers = [];
 
-});
+function eventConsumer (eventtype) {
+  return (event) => {
+    let consumed = notifiers.reduce((l, r) => l && r(event), false);
+    if (!consumed) {
+      queue.push(event);
+    }
+  }
+}
+
+window.addEventListener("keydown", eventConsumer("keydown"));
+
+window.addEventListener("keyup", eventConsumer("keyup"));
 
 export default {
   '__package__': Sk.builtin.none.none$,
@@ -26,13 +39,18 @@ export default {
     var susp = Sk.misceval.Suspension();
     susp.data = {
       type: "Sk.promise",
-      promise: new Promise(fulfill, reject) {
-
-      }
+      promise: new Promise((fulfill, reject) => {
+        notifiers.add(function (event) {
+          fulfill(event);
+          return true;
+        })
+      })
     };
     return susp;
   },
+
+  'Event': Event,
+
   'EventType': notImplemented,
-  'Event': notImplemented,
-  '_PYGAME_C_API': notImplemented,
+  '_PYGAME_C_API': notImplemented
 }

@@ -1,4 +1,4 @@
-export default {
+const locals = {
   '__doc__': 'Set of functions from PyGame that are handy to have in\nthe local namespace for your module',
   '__name__': 'pygame.locals',
   '__package__': 'pygame',
@@ -261,3 +261,34 @@ export default {
   'YVYU_OVERLAY': 1431918169
 }
 
+const names = {
+  0: 'NoEvent',
+  1: 'ActiveEvent',
+  2: 'KeyDown',
+  3: 'KeyUp',
+  4: 'MouseMotion',
+  5: 'MouseButtonDown',
+  6: 'MouseButtonUp',
+  7: 'JoyAxisMotion',
+  8: 'JoyBallMotion',
+  9: 'JoyHatMotion',
+  10: 'JoyButtonDown',
+  11: 'JoyButtonUp',
+  12: 'Quit',
+  13: 'SysWMEvent',
+  16: 'VideoResize',
+  17: 'VideoExpose',
+  24: 'UserEvent',
+  27: 'UserEvent'
+}
+
+export function reveseLookup (type) {
+  let val = locals[Object.keys(locals).find(v => locals[v] === type)];
+  if (val && names.hasOwnProperty(val)) {
+    return names[val];
+  }
+
+  return  "Unknown";
+};
+
+export default locals;
