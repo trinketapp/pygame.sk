@@ -1,0 +1,1 @@
+var $builtinmodule = function (name) { return Pygame.event };

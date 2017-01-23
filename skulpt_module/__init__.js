@@ -1,0 +1,1 @@
+var $builtinmodule = Pygame.main;
