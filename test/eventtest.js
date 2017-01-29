@@ -21,8 +21,7 @@ describe('event', () => {
   describe('eventname', () => {
 
     it('should return the name of an eventtype', () => {
-      console.log(eventClass.event_name);
-      strictEqual(Sk.misceval.callsim(eventClass.event_name, Sk.ffi.remapToPy(2)), 'KeyDown');
+      strictEqual(Sk.misceval.callsim(eventClass.event_name, Sk.ffi.remapToPy(2)), Sk.ffi.remapToPy('KeyDown'));
     });
 
   });

@@ -20,7 +20,6 @@ function remapInner(obj) {
     }
   }
 
-  console.log(res);
   return res;
 }
 
