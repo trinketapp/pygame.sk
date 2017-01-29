@@ -93,7 +93,7 @@ const event_locs = {
       return Sk.ffi.remapToPy(queueContains(type));
     }
 
-    return queue.length ? queue[0] : Sk.misceval.callsimOrSuspend(event.Event, Sk.ffi.remapToPy(0));
+    return queue.length ? queue[0] : Sk.misceval.callsimOrSuspend(event_locs.Event, Sk.ffi.remapToPy(0));
   },
   wait() {
     let chandler = null;
@@ -117,23 +117,19 @@ const event_locs = {
 
     return susp;
   },
-
   event_name: (type) => Sk.ffi.remapToPy(reveseLookup(Sk.ffi.remapToJs(type))),
-
   set_blocked(type) {
     Sk.builtin.pyCheckArgs('set_blocked', arguments, 1, 1);
     let types = Sk.builtin.checkIterable(type) ? Sk.ffi.remapToJs(type) : [Sk.ffi.remapToJs(type)];
     types.foreach(t => blackList.add(t));
     return Sk.builtin.none.none$;
   },
-
   set_allowed(type) {
     Sk.builtin.pyCheckArgs('set_allowed', arguments, 1, 1);
     let types = Sk.builtin.checkIterable(type) ? Sk.ffi.remapToJs(type) : [Sk.ffi.remapToJs(type)];
     types.foreach(t => whiteList.add(t));
     return Sk.builtin.none.none$;
   },
-
   get_blocked(type) {
     Sk.builtin.pyCheckArgs('get_blocked', arguments, 1, 1);
     let jstype = Sk.ffi.remapToJs(type);

@@ -40,6 +40,19 @@ describe('event', () => {
       strictEqual(Sk.misceval.callsim(eventClass.poll), event);
     });
 
+    it('should get all events on queue of type', () => {
+      let events = [
+        Sk.misceval.callsim(eventClass.Event, 2),
+        Sk.misceval.callsim(eventClass.Event, 3),
+        Sk.misceval.callsim(eventClass.Event, 4) ];
+
+      events.forEach(e => Sk.misceval.callsim(eventClass.post, e));
+
+      strictEqual(eventIsOf(Sk.misceval.callsim(eventClass.get, Sk.ffi.remapToPy(2)).v[0], [2]), true);
+      strictEqual(eventIsOf(Sk.misceval.callsim(eventClass.get, Sk.ffi.remapToPy(3)).v[0], [3]), true);
+      strictEqual(eventIsOf(Sk.misceval.callsim(eventClass.get, Sk.ffi.remapToPy(4)).v[0], [4]), true);
+    });
+
     it('should get all events on queue', () => {
       let events = [
         Sk.misceval.callsim(eventClass.Event, 2),
@@ -48,12 +61,11 @@ describe('event', () => {
 
       events.forEach(e => Sk.misceval.callsim(eventClass.post, e));
 
-      //console.log(eventIsOf(Sk.misceval.callsim(eventClass.get, Sk.ffi.remapToPy(2)).v[0], [2]));
+      let pyEvents = Sk.misceval.callsim(eventClass.get);
 
-      strictEqual(eventIsOf(Sk.misceval.callsim(eventClass.get, Sk.ffi.remapToPy(2)).v[0], [2]), true);
-      strictEqual(eventIsOf(Sk.misceval.callsim(eventClass.get, Sk.ffi.remapToPy(3)).v[0], [3]), true);
-      strictEqual(eventIsOf(Sk.misceval.callsim(eventClass.get, Sk.ffi.remapToPy(4)).v[0], [4]), true);
+      strictEqual(eventIsOf(pyEvents.v[0], [2]), true);
+      strictEqual(eventIsOf(pyEvents.v[1], [3]), true);
+      strictEqual(eventIsOf(pyEvents.v[2], [4]), true);
     });
-
   });
 });
