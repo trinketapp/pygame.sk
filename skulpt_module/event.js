@@ -1,1 +1,1 @@
-var $builtinmodule = function (name) { return Pygame.event };
+var $builtinmodule = function (name) { return Pygame.event(); };

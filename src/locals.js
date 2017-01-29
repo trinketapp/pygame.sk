@@ -1,3 +1,5 @@
+import event from './event.js';
+
 const locals = {
   '__doc__': 'Set of functions from PyGame that are handy to have in\nthe local namespace for your module',
   '__name__': 'pygame.locals',
@@ -259,7 +261,7 @@ const locals = {
   'YUY2_OVERLAY': 844715353,
   'YV12_OVERLAY': 842094169,
   'YVYU_OVERLAY': 1431918169
-}
+};
 
 const names = {
   0: 'NoEvent',
@@ -280,7 +282,92 @@ const names = {
   17: 'VideoExpose',
   24: 'UserEvent',
   27: 'UserEvent'
-}
+};
+
+const typeMap = {
+  'keyup': locals.KEYUP,
+  'keydown': locals.KEYDOWN
+};
+
+const codeMap = {
+  'AltLeft': locals.K_LALT,
+  'AltRight': locals.K_RALT,
+  'ControlLeft': locals.K_LCTRL,
+  'ControlRight': locals.K_LCTRL,
+  'MetaLeft': locals.K_LMETA,
+  'MetaRight': locals.K_RMETA,
+  'ShiftLeft': locals.K_LSHIFT,
+  'ShiftRight': locals.K_RSHIFT,
+  'CapsLock': locals.K_CAPSLOCK,
+  'Escape': locals.K_ESCAPE,
+  'F1': locals.K_F1,
+  'F2': locals.K_F2,
+  'F3': locals.K_F3,
+  'F4': locals.K_F4,
+  'F5': locals.K_F5,
+  'F6': locals.K_F6,
+  'F7': locals.K_F7,
+  'F8': locals.K_F8,
+  'F9': locals.K_F9,
+  'F10': locals.K_F10,
+  'F11': locals.K_F11,
+  'F12': locals.K_F12,
+  'ArrowUp': locals.K_UP,
+  'ArrowLeft': locals.K_LEFT,
+  'ArrowRight': locals.K_RIGHT,
+  'ArrowDown': locals.K_DOWN,
+  'Semicolon': locals.K_SEMICOLON,
+  'Quote': locals.K_QUOTE,
+  'BracketRight': locals.K_RIGHTBRACKET,
+  'BracketLeft': locals.K_LEFTBRACKET,
+  'Digit0': locals.K_0,
+  'Digit1': locals.K_1,
+  'Digit2': locals.K_2,
+  'Digit3': locals.K_3,
+  'Digit4': locals.K_4,
+  'Digit5': locals.K_5,
+  'Digit6': locals.K_6,
+  'Digit7': locals.K_7,
+  'Digit8': locals.K_8,
+  'Digit9': locals.K_9,
+  'Backspace': locals.K_BACKSPACE,
+  'Enter': locals.K_RETURN,
+  'Tab': locals.K_TAB,
+  'Space': locals.K_SPACE,
+  'Comma': locals.K_COMMA,
+  'Period': locals.K_PERIOD,
+  'Slash': locals.K_SLASH,
+  'Backslash': locals.K_BACKSLASH,
+  'IntlBackslash': locals.K_BACKQUOTE,
+  'Minus': locals.K_MINUS,
+  'Equals': locals.K_EQUALS,
+  'KeyQ': locals.K_q,
+  'KeyW': locals.K_w,
+  'KeyE': locals.K_e,
+  'KeyR': locals.K_r,
+  'KeyT': locals.K_t,
+  'KeyY': locals.K_y,
+  'KeyU': locals.K_u,
+  'KeyI': locals.K_i,
+  'KeyO': locals.K_o,
+  'KeyP': locals.K_p,
+  'KeyA': locals.K_a,
+  'KeyS': locals.K_s,
+  'KeyD': locals.K_d,
+  'KeyF': locals.K_f,
+  'KeyG': locals.K_g,
+  'KeyH': locals.K_h,
+  'KeyJ': locals.K_j,
+  'KeyK': locals.K_k,
+  'KeyL': locals.K_l,
+  'KeyZ': locals.K_z,
+  'KeyX': locals.K_x,
+  'KeyC': locals.K_c,
+  'KeyV': locals.K_v,
+  'KeyB': locals.K_b,
+  'KeyN': locals.K_n,
+  'KeyM': locals.K_m
+};
 
 export function reveseLookup (type) {
   let val = locals[Object.keys(locals).find(v => locals[v] === type)];
@@ -288,7 +375,14 @@ export function reveseLookup (type) {
     return names[val];
   }
 
-  return  "Unknown";
-};
+  return  'Unknown';
+}
+
+export function mapEvent (eventtype, jsevent) {
+  return Sk.misceval.callsimOrSuspend(event().Event, Sk.ffi.remapToPy(typeMap[eventtype]), Sk.ffi.remapToPy({
+    unicode: jsevent.key.length === 1 ? jsevent.key : '',
+    scancode: codeMap[jsevent.code]
+  }));
+}
 
 export default locals;

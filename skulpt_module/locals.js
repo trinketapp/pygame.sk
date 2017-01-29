@@ -1,1 +1,1 @@
-var $builtinmodule = function (name) { return Pygame.locals };
+var $builtinmodule = function (name) { return Pygame.locals; };

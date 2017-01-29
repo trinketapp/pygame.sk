@@ -1,4 +1,4 @@
-import { notImplemented, dud } from './shared.js'
+import { notImplemented, dud } from './shared.js';
 
 export default {
   __doc__: 'pygame module to control the display window and screen',

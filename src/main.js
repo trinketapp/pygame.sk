@@ -1,12 +1,26 @@
-import locals from './locals.js'
-import display from './display.js'
-import event from './event.js'
+import locals from './locals.js';
+import display from './display.js';
+import event, { clearHandlers, eventIsOf } from './event.js';
+import Sk from './skulpt.js';
 
 function remapInner(obj) {
-  var res = {};
-  for (var x in obj) {
-    res[x] = Sk.ffi.remapToPy(obj[x]);
+  if (typeof(obj) === 'function') {
+    return () => {
+      return remapInner(obj());
+    };
+  } else {
+    var res = {};
+    for (var x in obj) {
+      if (obj[x].$isclass) {
+        res[x] = obj[x];
+        delete res[x].$isclass;
+      } else {
+        res[x] = Sk.ffi.remapToPy(obj[x]);
+      }
+    }
   }
+
+  console.log(res);
   return res;
 }
 
@@ -18,40 +32,46 @@ function makeModule(locs) {
 
 function assign(target, source) {
   var cleanSource = {};
-  Object.keys(source).filter(x => x[0] !== "_").forEach(x => cleanSource[x] = source[x]);
+  Object.keys(source).filter(x => x[0] !== '_').forEach(x => cleanSource[x] = source[x]);
   return Object.assign(target, cleanSource);
 }
 
 export default {
   init(path) {
+    //because we make a class before skulpt is initialized
+    //Sk.builtin.type.basesStr_ = new Sk.builtin.str("__bases__");
+
     Sk.externalLibraries = Sk.externalLibraries || {};
 
     Object.assign(Sk.externalLibraries, {
       pygame: {
         path:`${path}/__init__.js`,
       },
-      "pygame.locals": {
+      'pygame.locals': {
         path: `${path}/locals.js`
       },
-      "pygame.display": {
+      'pygame.display': {
         path: `${path}/display.js`
       },
-      "pygame.event": {
+      'pygame.event': {
         path: `${path}/event.js`
       }
     });
   },
-  main(name) {
+  main() {
+    clearHandlers();
     return remapInner(assign({
       init() {
         //dud
       },
       display: makeModule(display),
       locals: makeModule(locals),
-      event: makeModule(event)
+      event: makeModule(event())
     }, locals));
   },
   locals: remapInner(locals),
   display: remapInner(display),
-  event: remapInner(event)
+  event: remapInner(event),
+  Sk,
+  eventIsOf,
 };
