@@ -67,9 +67,9 @@ const event_locs = {
       let types = Sk.builtin.checkIterable(type) ? Sk.ffi.remapToJs(type) : [Sk.ffi.remapToJs(type)];
 
       try {
-        return Sk.ffi.remapToPy(queue.filter(e => !eventIsOf(e, types)));
+        return Sk.ffi.remapToPy(queue.filter(e => eventIsOf(e, types)));
       } finally {
-        queue = queue.filter(e => eventIsOf(e, types));
+        queue = queue.filter(e => !eventIsOf(e, types));
       }
     }
 

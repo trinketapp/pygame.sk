@@ -1,6 +1,6 @@
 import json from 'rollup-plugin-json';
 import babel from 'rollup-plugin-babel';
-import istanbul from 'rollup-plugin-istanbul';
+// import istanbul from 'rollup-plugin-istanbul';
 import babelrc from 'babelrc-rollup';
 
 let pkg = require('./package.json')
