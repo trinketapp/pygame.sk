@@ -56,7 +56,7 @@ const event_locs = {
   'pump': dud,
 
   poll() {
-    return queue.length ? queue.pop : Sk.misceval.callsimOrSuspend(event.Event, Sk.ffi.remapToPy(0));
+    return queue.length ? queue.pop() : Sk.misceval.callsimOrSuspend(event_locs.Event, Sk.ffi.remapToPy(0));
   },
   post(event) {
     Sk.builtin.pyCheckArgs('post', arguments, 1, 1);

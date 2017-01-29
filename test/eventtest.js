@@ -25,4 +25,20 @@ describe('event', () => {
     });
 
   });
+
+  describe('queue functions', () => {
+
+    it('should return an unknown event when the queue is empty', () => {
+      let event = Sk.misceval.callsim(eventClass.poll);
+      strictEqual(eventIsOf(event, [0]), true);
+    });
+
+    it('should be able to post an event on the queue', () => {
+      let event = Sk.misceval.callsim(eventClass.Event, 2);
+      Sk.misceval.callsim(eventClass.post, event);
+
+      strictEqual(Sk.misceval.callsim(eventClass.poll), event);
+    });
+
+  });
 });
