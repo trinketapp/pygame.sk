@@ -6,9 +6,11 @@
 
 Requirements: yarn, rollup
 
-`rollup -c rollup.config.js`
+Build: `npm run build`
 
-> add `-w` if you want to watch, so it builds on every changed file.
+Run tests: `npm test`
+
+Watch: `npm run watch`
 
 Copy the pygame.js file and the contents of `skulpt_module` to a directory somewhere reachable.
 
