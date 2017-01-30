@@ -289,7 +289,7 @@ const typeMap = {
   'keydown': locals.KEYDOWN
 };
 
-const codeMap = {
+const keyMap = {
   'AltLeft': locals.K_LALT,
   'AltRight': locals.K_RALT,
   'ControlLeft': locals.K_LCTRL,
@@ -366,8 +366,82 @@ const codeMap = {
   'KeyV': locals.K_v,
   'KeyB': locals.K_b,
   'KeyN': locals.K_n,
-  'KeyM': locals.K_m
+  'KeyM': locals.K_m,
+
+  //not mapped but with value
+  'Backquote': 160
 };
+
+const scanCodeMap = {
+  'KeyA': 0,
+  'KeyS': 1,
+  'KeyD': 2,
+  'KeyF': 3,
+  'KeyH': 4,
+  'KeyG': 5,
+  'KeyZ': 6,
+  'KeyX': 7,
+  'KeyC': 8,
+  'KeyV': 9,
+  'Backquote': 10,
+  'KeyB': 11,
+  'KeyQ': 12,
+  'KeyW': 13,
+  'KeyE': 14,
+  'KeyR': 15,
+  'KeyY': 16,
+  'KeyU': 17,
+  'Digit1': 18,
+  'Digit2': 19,
+  'Digit3': 20,
+  'Digit4': 21,
+  'Digit6': 22,
+  'Digit5': 23,
+  'Equals': 24,
+  'Digit9': 25,
+  'Digit7': 26,
+  'Minus': 27,
+  'Digit8': 28,
+  'BracketRight': 30,
+  'KeyO': 31,
+  'KeyU': 32,
+  'BracketLeft': 33,
+  'KeyI': 34,
+  'KeyP': 35,
+  'Enter': 36,
+  'KeyL': 37,
+  'KeyJ': 38,
+  'Quote': 39,
+  'KeyK': 40,
+  'Semicolon': 41,
+  'Backslash': 42,
+  'Comma': 43,
+  'Slash': 44,
+  'KeyN': 45,
+  'KeyM': 46,
+  'Period': 47,
+  'Tab': 48,
+  'Space': 49,
+  'IntlBackslash': 50,
+  'Backspace': 51,
+  'Escape': 53,
+  'F5': 96,
+  'F6': 97,
+  'F7': 98,
+  'F3': 99,
+  'F8': 100,
+  'F9': 101,
+  'F10': 109,
+  'F11': 110,
+  'F12': 111,
+  'F4': 118,
+  'F2': 120,
+  'F1': 122,
+  'ArrowLeft': 123,
+  'ArrowRight': 124,
+  'ArrowDown': 125,
+  'ArrowUp': 126
+}
 
 export function reveseLookup (type) {
   let val = locals[Object.keys(locals).find(v => locals[v] === type)];
@@ -381,7 +455,8 @@ export function reveseLookup (type) {
 export function mapEvent (eventtype, jsevent) {
   return Sk.misceval.callsimOrSuspend(event().Event, Sk.ffi.remapToPy(typeMap[eventtype]), Sk.ffi.remapToPy({
     unicode: jsevent.key.length === 1 ? jsevent.key : '',
-    scancode: codeMap[jsevent.code]
+    key: keyMap[jsevent.code],
+    scancode: scanCodeMap[jsevent.code] || 0
   }));
 }
 
