@@ -1,6 +1,6 @@
 import locals from './locals.js';
 import display from './display.js';
-import event, { clearHandlers, eventIsOf } from './event.js';
+import event, { clearHandlers, eventIsOf, eventConsumer } from './event.js';
 import Sk from './skulpt.js';
 
 function remapInner(obj) {
@@ -35,10 +35,32 @@ function assign(target, source) {
   return Object.assign(target, cleanSource);
 }
 
+function initializeHandlers(keydownListener, keyupListener) {
+  if (keydownListener) {
+    keydownListener(eventConsumer('keydown'));
+  } else {
+    if (typeof(window) !== 'undefined') {
+      window.addEventListener('keydown', eventConsumer('keydown'));
+    }
+  }
+
+  if (keyupListener) {
+    keyupListener(eventConsumer('keyup'))
+  } else {
+    if (typeof(window) !== 'undefined') {
+      window.addEventListener('keyup', eventConsumer('keyup'));
+    }
+  }
+}
+
+let keydownListener = null;
+let keyupListener = null;
+
 export default {
-  init(path) {
-    //because we make a class before skulpt is initialized
-    //Sk.builtin.type.basesStr_ = new Sk.builtin.str("__bases__");
+  init(path, _keydownListener, _keyupListener) {
+
+    keydownListener = _keydownListener;
+    keyupListener = _keyupListener;
 
     Sk.externalLibraries = Sk.externalLibraries || {};
 
@@ -59,6 +81,7 @@ export default {
   },
   main() {
     clearHandlers();
+    initializeHandlers(keydownListener, keyupListener);
     return remapInner(assign({
       init() {
         //dud

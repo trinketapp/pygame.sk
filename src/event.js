@@ -41,11 +41,6 @@ function isAllowed(e) {
   return true;
 }
 
-if (typeof(window) !== 'undefined') {
-  window.addEventListener('keydown', eventConsumer('keydown'));
-  window.addEventListener('keyup', eventConsumer('keyup'));
-}
-
 const event_locs = {
   '__package__': Sk.builtin.none.none$,
   '__doc__': 'pygame module for interacting with events and queues',
@@ -146,7 +141,7 @@ export function clearHandlers() {
   notifiers.length = 0;
 }
 
-export { eventIsOf };
+export { eventIsOf, eventConsumer };
 
 export default function event() {
   event_locs.Event =  EventClass(event_locs);
