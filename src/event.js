@@ -90,7 +90,7 @@ const event_locs = {
         return Sk.ffi.remapToPy(queueContains(types));
       }
 
-      return Sk.ffi.remapToPy(queueContains(type));
+      return Sk.ffi.remapToPy(queueContains([Sk.ffi.remapToJs(type)]));
     }
 
     return queue.length ? queue[0] : Sk.misceval.callsimOrSuspend(event_locs.Event, Sk.ffi.remapToPy(0));

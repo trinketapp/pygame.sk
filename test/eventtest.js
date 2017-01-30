@@ -28,9 +28,25 @@ describe('event', () => {
 
   describe('queue functions', () => {
 
-    it('should return an unknown event when the queue is empty', () => {
+    it('should return an unknown event when the queue is empty on poll', () => {
       let event = Sk.misceval.callsim(eventClass.poll);
       strictEqual(eventIsOf(event, [0]), true);
+    });
+
+    it('should return an unknown event when the queue is empty on peek', () => {
+      let event = Sk.misceval.callsim(eventClass.peek);
+      strictEqual(eventIsOf(event, [0]), true);
+    });
+
+    it('should return a bool if an event of type is on the queue or not', () => {
+      let event = Sk.misceval.callsim(eventClass.Event, 2);
+      Sk.misceval.callsim(eventClass.post, event);
+
+      let result = Sk.misceval.callsim(eventClass.peek, Sk.ffi.remapToPy(2));
+      strictEqual(Sk.ffi.remapToJs(result), true);
+
+      result = Sk.misceval.callsim(eventClass.peek, Sk.ffi.remapToPy(3));
+      strictEqual(Sk.ffi.remapToJs(result), false);
     });
 
     it('should be able to post an event on the queue', () => {

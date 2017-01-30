@@ -71,6 +71,5 @@ export default {
   locals: remapInner(locals),
   display: remapInner(display),
   event: remapInner(event),
-  Sk,
-  eventIsOf,
+  Sk, eventIsOf
 };
