@@ -30,12 +30,12 @@ const eventIsOf = (e, types) => types.indexOf(Sk.ffi.remapToJs(Sk.abstr.gattr(e,
 const queueContains = (types) => !!queue.find(e => eventIsOf(e, types));
 
 function isAllowed(e) {
-  if (whiteList.length > 0) {
-    return eventIsOf(e, whiteList);
+  if (whiteList.size > 0) {
+    return eventIsOf(e, Array.from(whiteList));
   }
 
-  if (blackList.length > 0) {
-    return !eventIsOf(e, blackList);
+  if (blackList.size > 0) {
+    return !eventIsOf(e, Array.from(blackList));
   }
 
   return true;
@@ -60,7 +60,9 @@ const event_locs = {
   },
   post(event) {
     Sk.builtin.pyCheckArgs('post', arguments, 1, 1);
-    queue.push(event);
+    if (isAllowed(event)) {
+      queue.push(event);
+    }
   },
   get(type) {
     if (type) {
@@ -121,13 +123,13 @@ const event_locs = {
   set_blocked(type) {
     Sk.builtin.pyCheckArgs('set_blocked', arguments, 1, 1);
     let types = Sk.builtin.checkIterable(type) ? Sk.ffi.remapToJs(type) : [Sk.ffi.remapToJs(type)];
-    types.foreach(t => blackList.add(t));
+    types.forEach(t => blackList.add(t));
     return Sk.builtin.none.none$;
   },
   set_allowed(type) {
     Sk.builtin.pyCheckArgs('set_allowed', arguments, 1, 1);
     let types = Sk.builtin.checkIterable(type) ? Sk.ffi.remapToJs(type) : [Sk.ffi.remapToJs(type)];
-    types.foreach(t => whiteList.add(t));
+    types.forEach(t => whiteList.add(t));
     return Sk.builtin.none.none$;
   },
   get_blocked(type) {

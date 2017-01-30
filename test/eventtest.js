@@ -84,4 +84,26 @@ describe('event', () => {
       strictEqual(eventIsOf(pyEvents.v[2], [4]), true);
     });
   });
+
+  describe('blocking and allowing', () => {
+    it('should block events when it\'s set to be blocked', () => {
+      Sk.misceval.callsim(eventClass.set_blocked, Sk.ffi.remapToPy(2));
+
+      let event = Sk.misceval.callsim(eventClass.Event, 2);
+
+      Sk.misceval.callsim(eventClass.post, event);
+
+      let result = Sk.ffi.remapToJs(Sk.misceval.callsim(eventClass.get));
+
+      let blocked = Sk.ffi.remapToJs(Sk.misceval.callsim(eventClass.get_blocked, Sk.ffi.remapToPy(2)));
+
+      let notBlocked = Sk.ffi.remapToJs(Sk.misceval.callsim(eventClass.get_blocked, Sk.ffi.remapToPy(1)));
+
+      strictEqual(blocked, true);
+
+      strictEqual(notBlocked, false);
+
+      strictEqual(result.length, 0);
+    });
+  });
 });
