@@ -402,6 +402,7 @@ const scanCodeMap = {
   'Digit7': 26,
   'Minus': 27,
   'Digit8': 28,
+  'Digit0': 29,
   'BracketRight': 30,
   'KeyO': 31,
   'KeyU': 32,

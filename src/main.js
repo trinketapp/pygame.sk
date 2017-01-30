@@ -45,7 +45,7 @@ function initializeHandlers(keydownListener, keyupListener) {
   }
 
   if (keyupListener) {
-    keyupListener(eventConsumer('keyup'))
+    keyupListener(eventConsumer('keyup'));
   } else {
     if (typeof(window) !== 'undefined') {
       window.addEventListener('keyup', eventConsumer('keyup'));
