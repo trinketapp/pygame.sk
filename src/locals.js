@@ -390,7 +390,7 @@ const scanCodeMap = {
   'KeyE': 14,
   'KeyR': 15,
   'KeyY': 16,
-  'KeyU': 17,
+  'KeyT': 17,
   'Digit1': 18,
   'Digit2': 19,
   'Digit3': 20,
@@ -441,7 +441,7 @@ const scanCodeMap = {
   'ArrowRight': 124,
   'ArrowDown': 125,
   'ArrowUp': 126
-}
+};
 
 export function reveseLookup (type) {
   let val = locals[Object.keys(locals).find(v => locals[v] === type)];
