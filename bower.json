@@ -1,0 +1,23 @@
+{
+  "name": "pygame.sk",
+  "description": "pygame for skulpt",
+  "main": "pygame.js",
+  "authors": [
+    "albertjan@trinket.io"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "pygame",
+    "skulpt",
+    "python"
+  ],
+  "homepage": "https://github.com/trinketapp/pygame.sk",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
