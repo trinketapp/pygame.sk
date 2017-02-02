@@ -53,6 +53,40 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
 };
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var _extends = Object.assign || function (target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = arguments[i];
+
+    for (var key in source) {
+      if (Object.prototype.hasOwnProperty.call(source, key)) {
+        target[key] = source[key];
+      }
+    }
+  }
+
+  return target;
+};
+
 var notifiers = [];
 var queue = [];
 
@@ -721,6 +755,8 @@ var display = {
   list_modes: notImplemented
 };
 
+var globalScope = typeof window !== 'undefined' ? window : global;
+
 function remapInner(obj) {
   if (typeof obj === 'function') {
     return function () {
@@ -754,21 +790,29 @@ function assign(target, source) {
   }).forEach(function (x) {
     return cleanSource[x] = source[x];
   });
-  return Object.assign(target, cleanSource);
+  return _extends(target, cleanSource);
 }
+
+function appendListener(eventType, listenerName) {
+  globalScope.listeners = globalScope.listeners || {};
+  globalScope.listeners[eventType] = globalScope.listeners[eventType] || [];
+  globalScope.listeners[eventType].push(listenerName);
+}
+
+var hasListener = function hasListener(eventType, listenerName) {
+  var res = globalScope.listeners && globalScope.listeners[eventType] && globalScope.listeners[eventType].indexOf(listenerName) > -1;
+  return res;
+};
 
 function addPygameEventListener(eventType, customListener) {
   if (customListener) {
     customListener(eventConsumer(eventType));
   } else {
-    if (typeof window !== 'undefined') {
-      var listeners = window.getEventListeners(window)[eventType];
-      var hasListener = listeners && listeners.map(function (x) {
-        return x.listener.name;
-      }).indexOf('pygameEventListener') > -1;
-      if (!hasListener) {
-        window.addEventListener(eventType, eventConsumer(eventType));
-      }
+    var listener = eventConsumer(eventType);
+    var listenerAdded = hasListener(eventType, listener.name);
+    if (!listenerAdded) {
+      appendListener(eventType, listener.name);
+      globalScope.addEventListener(eventType, listener);
     }
   }
 }
@@ -791,7 +835,7 @@ var main = {
 
     Sk.externalLibraries = Sk.externalLibraries || {};
 
-    Object.assign(Sk.externalLibraries, {
+    _extends(Sk.externalLibraries, {
       pygame: {
         path: path + '/__init__.js'
       },

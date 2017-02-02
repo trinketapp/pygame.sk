@@ -3,6 +3,8 @@ import display from './display.js';
 import event, { clearHandlers, eventIsOf, eventConsumer } from './event.js';
 import Sk from './skulpt.js';
 
+const globalScope = typeof(window) !== 'undefined' ? window : global;
+
 function remapInner(obj) {
   if (typeof(obj) === 'function') {
     return () => {
@@ -35,16 +37,26 @@ function assign(target, source) {
   return Object.assign(target, cleanSource);
 }
 
+function appendListener(eventType, listenerName) {
+  globalScope.listeners = globalScope.listeners || {};
+  globalScope.listeners[eventType] = globalScope.listeners[eventType] || [];
+  globalScope.listeners[eventType].push(listenerName);
+}
+
+const hasListener = (eventType, listenerName) => {
+  let res = globalScope.listeners && globalScope.listeners[eventType] && globalScope.listeners[eventType].indexOf(listenerName) > -1;
+  return res;
+};
+
 function addPygameEventListener(eventType, customListener) {
   if (customListener) {
     customListener(eventConsumer(eventType));
   } else {
-    if (typeof(window) !== 'undefined') {
-      let listeners = window.getEventListeners(window)[eventType];
-      let hasListener = listeners && listeners.map(x => x.listener.name).indexOf('pygameEventListener') > -1;
-      if (!hasListener) {
-        window.addEventListener(eventType, eventConsumer(eventType));
-      }
+    let listener = eventConsumer(eventType);
+    let listenerAdded = hasListener(eventType, listener.name);
+    if (!listenerAdded) {
+      appendListener(eventType, listener.name);
+      globalScope.addEventListener(eventType, listener);
     }
   }
 }

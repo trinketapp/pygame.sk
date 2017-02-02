@@ -1,4 +1,4 @@
-import { eventIsOf, event, Sk } from '../';
+import { eventIsOf, event, Sk, init } from '../';
 import { strictEqual } from 'assert';
 
 Sk.doOneTimeInitialization();
@@ -24,6 +24,17 @@ describe('event', () => {
       strictEqual(Sk.misceval.callsim(eventClass.event_name, Sk.ffi.remapToPy(2)), Sk.ffi.remapToPy('KeyDown'));
     });
 
+  });
+
+  describe('javascript interface event listeners', () => {
+    it('should add the default listeners to global scope when initialized', () => {
+      global.addEventListener = function () {};
+
+      init('');
+
+      strictEqual(global.listeners['keyup'].length, 1);
+      strictEqual(global.listeners['keydown'].length, 1);
+    });
   });
 
   describe('queue functions', () => {
