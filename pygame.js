@@ -60,7 +60,7 @@ var blackList = new Set();
 var whiteList = new Set();
 
 function eventConsumer(eventtype) {
-  return function (event) {
+  return function pygameEventListener(event) {
     var pygameEvent = mapEvent(eventtype, event);
     var consumed = notifiers.reduce(function (l, r) {
       return l || r(pygameEvent);
@@ -757,22 +757,25 @@ function assign(target, source) {
   return Object.assign(target, cleanSource);
 }
 
-function initializeHandlers(keydownListener, keyupListener) {
-  if (keydownListener) {
-    keydownListener(eventConsumer('keydown'));
+function addPygameEventListener(eventType, customListener) {
+  if (customListener) {
+    customListener(eventConsumer(eventType));
   } else {
     if (typeof window !== 'undefined') {
-      window.addEventListener('keydown', eventConsumer('keydown'));
+      var listeners = window.getEventListeners(window)[eventType];
+      var hasListener = listeners && listeners.map(function (x) {
+        return x.listener.name;
+      }).indexOf('pygameEventListener') > -1;
+      if (!hasListener) {
+        window.addEventListener(eventType, eventConsumer(eventType));
+      }
     }
   }
+}
 
-  if (keyupListener) {
-    keyupListener(eventConsumer('keyup'));
-  } else {
-    if (typeof window !== 'undefined') {
-      window.addEventListener('keyup', eventConsumer('keyup'));
-    }
-  }
+function initializeHandlers(keydownListener, keyupListener) {
+  addPygameEventListener('keyup', keyupListener);
+  addPygameEventListener('keydown', keydownListener);
 }
 
 var keydownListener = null;

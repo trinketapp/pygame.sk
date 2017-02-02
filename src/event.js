@@ -10,7 +10,7 @@ const blackList = new Set();
 const whiteList = new Set();
 
 function eventConsumer (eventtype) {
-  return (event) => {
+  return function pygameEventListener(event) {
     let pygameEvent = mapEvent(eventtype, event);
     let consumed = notifiers.reduce((l, r) => l || r(pygameEvent), false);
     if (!consumed && isAllowed(pygameEvent)) {
