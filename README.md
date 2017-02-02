@@ -6,11 +6,11 @@
 
 Requirements: yarn, rollup
 
-Build: `npm run build`
+Build: `yarn build`
 
-Run tests: `npm test`
+Run tests: `yarn test`
 
-Watch: `npm run watch`
+Watch: `yarn watch`
 
 Copy the pygame.js file and the contents of `skulpt_module` to a directory somewhere reachable.
 
