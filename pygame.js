@@ -781,6 +781,8 @@ var keyupListener = null;
 var main = {
   init: function init(path, _keydownListener, _keyupListener) {
 
+    initializeHandlers(keydownListener, keyupListener);
+
     keydownListener = _keydownListener;
     keyupListener = _keyupListener;
 
@@ -803,7 +805,6 @@ var main = {
   },
   main: function main() {
     clearHandlers();
-    initializeHandlers(keydownListener, keyupListener);
     return remapInner(assign({
       init: function init() {
         //dud

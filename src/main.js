@@ -59,6 +59,8 @@ let keyupListener = null;
 export default {
   init(path, _keydownListener, _keyupListener) {
 
+    initializeHandlers(keydownListener, keyupListener);
+
     keydownListener = _keydownListener;
     keyupListener = _keyupListener;
 
@@ -81,7 +83,6 @@ export default {
   },
   main() {
     clearHandlers();
-    initializeHandlers(keydownListener, keyupListener);
     return remapInner(assign({
       init() {
         //dud
