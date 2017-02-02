@@ -35,6 +35,16 @@ describe('event', () => {
       strictEqual(global.listeners['keyup'].length, 1);
       strictEqual(global.listeners['keydown'].length, 1);
     });
+
+    it('shouldn\'t add the default listeners twice', () => {
+      global.addEventListener = function () {};
+
+      init('');
+      init('');
+
+      strictEqual(global.listeners['keyup'].length, 1);
+      strictEqual(global.listeners['keydown'].length, 1);
+    });
   });
 
   describe('queue functions', () => {
