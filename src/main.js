@@ -67,9 +67,9 @@ function initializeHandlers(keydownListener, keyupListener) {
 }
 
 export default {
-  init(path, _keydownListener, _keyupListener) {
+  init(path, keydownListener, keyupListener) {
 
-    initializeHandlers(_keydownListener, _keyupListener);
+    initializeHandlers(keydownListener, keyupListener);
 
     Sk.externalLibraries = Sk.externalLibraries || {};
 

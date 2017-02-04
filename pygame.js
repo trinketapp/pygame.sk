@@ -211,7 +211,7 @@ var event_locs = {
 
     susp.resume = function () {
       //remove handler when we're done waiting
-      notifiers.splice(notifiers.indexOf(handler), 1);
+      notifiers.splice(notifiers.indexOf(chandler), 1);
 
       return susp.result;
     };
@@ -865,9 +865,9 @@ function initializeHandlers(keydownListener, keyupListener) {
 }
 
 var main = {
-  init: function init(path, _keydownListener, _keyupListener) {
+  init: function init(path, keydownListener, keyupListener) {
 
-    initializeHandlers(_keydownListener, _keyupListener);
+    initializeHandlers(keydownListener, keyupListener);
 
     Sk.externalLibraries = Sk.externalLibraries || {};
 

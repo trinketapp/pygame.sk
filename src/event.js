@@ -107,7 +107,7 @@ const event_locs = {
 
     susp.resume = function() {
       //remove handler when we're done waiting
-      notifiers.splice(notifiers.indexOf(handler), 1);
+      notifiers.splice(notifiers.indexOf(chandler), 1);
 
       return susp.result;
     };
