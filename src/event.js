@@ -9,7 +9,7 @@ let queue = [];
 const blackList = new Set();
 const whiteList = new Set();
 
-function eventConsumer (eventtype) {
+function eventConsumer(eventtype) {
   return function pygameEventListener(event) {
     let pygameEvent = mapEvent(eventtype, event);
     let consumed = notifiers.reduce((l, r) => l || r(pygameEvent), false);

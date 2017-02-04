@@ -444,6 +444,25 @@ const scanCodeMap = {
   'ArrowUp': 126
 };
 
+
+let modifier = 0;
+
+function modifierStateChange(eventtype, event, modifier) {
+  let capsModifier = event.getModifierState("CapsLock") ? modifier + 8192 : modifier;
+  let operator = eventtype === "keyup" ? (i, n) => i - n : (i, n) => i + n;
+  switch (event.code) {
+    case "ShiftLeft": return operator(capsModifier, 1);
+    case "ShiftRight": return operator(capsModifier, 2);
+    case "ControlRight": return operator(capsModifier, 64);
+    case "ControlLeft": return operator(capsModifier, 128);
+    case "AltRight": return operator(capsModifier, 256);
+    case "AltLeft": return operator(capsModifier, 512);
+    case "MetaRight": return operator(capsModifier, 1024);
+    case "MetaLeft": return operator(capsModifier, 2048);
+    default: return capsModifier;
+  }
+}
+
 export function reveseLookup (type) {
   let val = locals[Object.keys(locals).find(v => locals[v] === type)];
   if (val && names.hasOwnProperty(val)) {
@@ -454,10 +473,12 @@ export function reveseLookup (type) {
 }
 
 export function mapEvent (eventtype, jsevent) {
+  modifier = modifierStateChange(eventtype, jsevent, modifier);
   return Sk.misceval.callsimOrSuspend(event().Event, Sk.ffi.remapToPy(typeMap[eventtype]), Sk.ffi.remapToPy({
     unicode: jsevent.key.length === 1 ? jsevent.key : '',
     key: keyMap[jsevent.code],
-    scancode: scanCodeMap[jsevent.code] || 0
+    scancode: scanCodeMap[jsevent.code] || 0,
+    modifier
   }));
 }
 
