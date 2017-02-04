@@ -47,6 +47,31 @@ describe('event', () => {
     });
   });
 
+  describe('modifier tests', () => {
+    it('should add the capslock modifier when its on', () => {
+      let keyDown;
+      init('', (eventHandler) => { keyDown = eventHandler; },  () => { });
+
+      keyDown({ code: 'KeyA', key: 'a', getModifierState() { return true; } });
+      let dict = Sk.ffi.remapToJs(Sk.abstr.gattr(Sk.misceval.callsim(eventClass.poll), 'dict', false));
+      strictEqual(dict.mod, 8192);
+    });
+
+    it('should add the shift modifier when its held', () => {
+      let keyDown;
+      init('', (eventHandler) => { keyDown = eventHandler; }, () => { });
+
+      keyDown({ code: 'ShiftLeft', key: '', getModifierState() { return false; } });
+      keyDown({ code: 'KeyA', key: 'A', getModifierState() { return false; } });
+      let dict = Sk.ffi.remapToJs(Sk.abstr.gattr(Sk.misceval.callsim(eventClass.poll), 'dict', false));
+
+      strictEqual(dict.mod, 1);
+
+      // empty queue for next tests
+      Sk.misceval.callsim(eventClass.get);
+    });
+  });
+
   describe('queue functions', () => {
 
     it('should return an unknown event when the queue is empty on poll', () => {

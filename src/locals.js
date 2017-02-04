@@ -444,22 +444,23 @@ const scanCodeMap = {
   'ArrowUp': 126
 };
 
-
 let modifier = 0;
 
-function modifierStateChange(eventtype, event, modifier) {
-  let capsModifier = event.getModifierState("CapsLock") ? modifier + 8192 : modifier;
-  let operator = eventtype === "keyup" ? (i, n) => i - n : (i, n) => i + n;
+const capsModifier = (e, m) => e.getModifierState('CapsLock') ? m + 8192 : m;
+
+function modifierStateChange(eventtype, event) {
+  let operator = (i,n) => modifier = (eventtype === 'keyup' ? (i, n) => i - n : (i, n) => i + n)(i,n);
+
   switch (event.code) {
-    case "ShiftLeft": return operator(capsModifier, 1);
-    case "ShiftRight": return operator(capsModifier, 2);
-    case "ControlRight": return operator(capsModifier, 64);
-    case "ControlLeft": return operator(capsModifier, 128);
-    case "AltRight": return operator(capsModifier, 256);
-    case "AltLeft": return operator(capsModifier, 512);
-    case "MetaRight": return operator(capsModifier, 1024);
-    case "MetaLeft": return operator(capsModifier, 2048);
-    default: return capsModifier;
+  case 'ShiftLeft':    return capsModifier(event, operator(modifier, 1));
+  case 'ShiftRight':   return capsModifier(event, operator(modifier, 2));
+  case 'ControlRight': return capsModifier(event, operator(modifier, 64));
+  case 'ControlLeft':  return capsModifier(event, operator(modifier, 128));
+  case 'AltRight':     return capsModifier(event, operator(modifier, 256));
+  case 'AltLeft':      return capsModifier(event, operator(modifier, 512));
+  case 'MetaRight':    return capsModifier(event, operator(modifier, 1024));
+  case 'MetaLeft':     return capsModifier(event, operator(modifier, 2048));
+  default:             return capsModifier(event, modifier);
   }
 }
 
@@ -473,13 +474,16 @@ export function reveseLookup (type) {
 }
 
 export function mapEvent (eventtype, jsevent) {
-  modifier = modifierStateChange(eventtype, jsevent, modifier);
   return Sk.misceval.callsimOrSuspend(event().Event, Sk.ffi.remapToPy(typeMap[eventtype]), Sk.ffi.remapToPy({
     unicode: jsevent.key.length === 1 ? jsevent.key : '',
     key: keyMap[jsevent.code],
     scancode: scanCodeMap[jsevent.code] || 0,
-    modifier
+    mod: modifierStateChange(eventtype, jsevent)
   }));
+}
+
+export function resetModifier() {
+  modifier = 0;
 }
 
 export default locals;

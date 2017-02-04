@@ -705,32 +705,38 @@ var scanCodeMap = {
 
 var modifier = 0;
 
-function modifierStateChange(eventtype, event$$1, modifier) {
-  var capsModifier = event$$1.getModifierState("CapsLock") ? modifier + 8192 : modifier;
-  var operator = eventtype === "keyup" ? function (i, n) {
-    return i - n;
-  } : function (i, n) {
-    return i + n;
+var capsModifier = function capsModifier(e, m) {
+  return e.getModifierState('CapsLock') ? m + 8192 : m;
+};
+
+function modifierStateChange(eventtype, event$$1) {
+  var operator = function operator(i, n) {
+    return modifier = (eventtype === 'keyup' ? function (i, n) {
+      return i - n;
+    } : function (i, n) {
+      return i + n;
+    })(i, n);
   };
+
   switch (event$$1.code) {
-    case "ShiftLeft":
-      return operator(capsModifier, 1);
-    case "ShiftRight":
-      return operator(capsModifier, 2);
-    case "ControlRight":
-      return operator(capsModifier, 64);
-    case "ControlLeft":
-      return operator(capsModifier, 128);
-    case "AltRight":
-      return operator(capsModifier, 256);
-    case "AltLeft":
-      return operator(capsModifier, 512);
-    case "MetaRight":
-      return operator(capsModifier, 1024);
-    case "MetaLeft":
-      return operator(capsModifier, 2048);
+    case 'ShiftLeft':
+      return capsModifier(event$$1, operator(modifier, 1));
+    case 'ShiftRight':
+      return capsModifier(event$$1, operator(modifier, 2));
+    case 'ControlRight':
+      return capsModifier(event$$1, operator(modifier, 64));
+    case 'ControlLeft':
+      return capsModifier(event$$1, operator(modifier, 128));
+    case 'AltRight':
+      return capsModifier(event$$1, operator(modifier, 256));
+    case 'AltLeft':
+      return capsModifier(event$$1, operator(modifier, 512));
+    case 'MetaRight':
+      return capsModifier(event$$1, operator(modifier, 1024));
+    case 'MetaLeft':
+      return capsModifier(event$$1, operator(modifier, 2048));
     default:
-      return capsModifier;
+      return capsModifier(event$$1, modifier);
   }
 }
 
@@ -746,13 +752,16 @@ function reveseLookup(type) {
 }
 
 function mapEvent(eventtype, jsevent) {
-  modifier = modifierStateChange(eventtype, jsevent, modifier);
   return Sk.misceval.callsimOrSuspend(event().Event, Sk.ffi.remapToPy(typeMap[eventtype]), Sk.ffi.remapToPy({
     unicode: jsevent.key.length === 1 ? jsevent.key : '',
     key: keyMap[jsevent.code],
     scancode: scanCodeMap[jsevent.code] || 0,
-    modifier: modifier
+    mod: modifierStateChange(eventtype, jsevent)
   }));
+}
+
+function resetModifier() {
+  modifier = 0;
 }
 
 var display = {
@@ -855,16 +864,10 @@ function initializeHandlers(keydownListener, keyupListener) {
   addPygameEventListener('keydown', keydownListener);
 }
 
-var keydownListener = null;
-var keyupListener = null;
-
 var main = {
   init: function init(path, _keydownListener, _keyupListener) {
 
-    initializeHandlers(keydownListener, keyupListener);
-
-    keydownListener = _keydownListener;
-    keyupListener = _keyupListener;
+    initializeHandlers(_keydownListener, _keyupListener);
 
     Sk.externalLibraries = Sk.externalLibraries || {};
 
@@ -885,6 +888,7 @@ var main = {
   },
   main: function main() {
     clearHandlers();
+    resetModifier();
     return remapInner(assign({
       init: function init() {
         //dud

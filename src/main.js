@@ -1,4 +1,4 @@
-import locals from './locals.js';
+import locals, { resetModifier } from './locals.js';
 import display from './display.js';
 import event, { clearHandlers, eventIsOf, eventConsumer } from './event.js';
 import Sk from './skulpt.js';
@@ -66,16 +66,10 @@ function initializeHandlers(keydownListener, keyupListener) {
   addPygameEventListener('keydown', keydownListener);
 }
 
-let keydownListener = null;
-let keyupListener = null;
-
 export default {
   init(path, _keydownListener, _keyupListener) {
 
-    initializeHandlers(keydownListener, keyupListener);
-
-    keydownListener = _keydownListener;
-    keyupListener = _keyupListener;
+    initializeHandlers(_keydownListener, _keyupListener);
 
     Sk.externalLibraries = Sk.externalLibraries || {};
 
@@ -96,6 +90,7 @@ export default {
   },
   main() {
     clearHandlers();
+    resetModifier();
     return remapInner(assign({
       init() {
         //dud
