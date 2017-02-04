@@ -6,6 +6,7 @@ Sk.doOneTimeInitialization();
 let eventClass = event();
 
 describe('event', () => {
+
   describe('isEventOf', () => {
 
     it('should not match if the event is not of type', () => {
@@ -27,6 +28,7 @@ describe('event', () => {
   });
 
   describe('javascript interface event listeners', () => {
+
     it('should add the default listeners to global scope when initialized', () => {
       global.addEventListener = function () {};
 
@@ -45,10 +47,12 @@ describe('event', () => {
       strictEqual(global.listeners['keyup'].length, 1);
       strictEqual(global.listeners['keydown'].length, 1);
     });
+
   });
 
   describe('modifier tests', () => {
-    it('should add the capslock modifier when its on', () => {
+
+    it('should add the capslock modifier when it\'s on', () => {
       let keyDown;
       init('', (eventHandler) => { keyDown = eventHandler; },  () => { });
 
@@ -57,7 +61,7 @@ describe('event', () => {
       strictEqual(dict.mod, 8192);
     });
 
-    it('should add the shift modifier when its held', () => {
+    it('should add the shift modifier when it\'s held', () => {
       let keyDown;
       init('', (eventHandler) => { keyDown = eventHandler; }, () => { });
 
@@ -70,6 +74,7 @@ describe('event', () => {
       // empty queue for next tests
       Sk.misceval.callsim(eventClass.get);
     });
+
   });
 
   describe('queue functions', () => {
@@ -129,9 +134,11 @@ describe('event', () => {
       strictEqual(eventIsOf(pyEvents.v[1], [3]), true);
       strictEqual(eventIsOf(pyEvents.v[2], [4]), true);
     });
+
   });
 
   describe('blocking and allowing', () => {
+
     it('should block events when it\'s set to be blocked', () => {
       Sk.misceval.callsim(eventClass.set_blocked, Sk.ffi.remapToPy(2));
 
@@ -151,5 +158,6 @@ describe('event', () => {
 
       strictEqual(result.length, 0);
     });
+
   });
 });

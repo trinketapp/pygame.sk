@@ -1,6 +1,7 @@
 import locals, { resetModifier } from './locals.js';
 import display from './display.js';
 import event, { clearHandlers, eventIsOf, eventConsumer } from './event.js';
+import { dud } from './shared.js';
 import Sk from './skulpt.js';
 
 const globalScope = typeof(window) !== 'undefined' ? window : global;
@@ -92,9 +93,18 @@ export default {
     clearHandlers();
     resetModifier();
     return remapInner(assign({
-      init() {
-        //dud
-      },
+      init: dud,
+      quit: dud,
+
+      error: notImplemented,
+      get_error: notImplemented,
+      set_error: notImplemented,
+      get_sdl_version: notImplemented,
+      get_sql_byteorder: notImplemented,
+      register_quie: notImplemented,
+      encode_string: notImplemented,
+      encode_file_quit: notImplemented,
+
       display: makeModule(display),
       locals: makeModule(locals),
       event: makeModule(event())

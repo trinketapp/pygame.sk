@@ -4,12 +4,12 @@
   (global.Pygame = factory());
 }(this, (function () { 'use strict';
 
-function notImplemented() {
+function notImplemented$1() {
   throw new Sk.builtin.NotImplementedError('this function is not implemented in Sklupt');
 }
 
-function dud() {
-  return Sk.builtin.none.none$;
+function dud(retval) {
+  return retval;
 }
 
 if (typeof require === 'function') {
@@ -140,9 +140,9 @@ var event_locs = {
   '__doc__': 'pygame module for interacting with events and queues',
   '__name__': 'pygame.event',
 
-  'get_grab': dud,
-  'set_grab': dud,
-  'pump': dud,
+  'get_grab': dud(Sk.builtin.bool.true$),
+  'set_grab': dud(Sk.builtin.none.none$),
+  'pump': dud(Sk.builtin.none.none$),
 
   poll: function poll() {
     return queue.length ? queue.pop() : Sk.misceval.callsimOrSuspend(event_locs.Event, Sk.ffi.remapToPy(0));
@@ -245,8 +245,8 @@ var event_locs = {
   },
 
 
-  'EventType': notImplemented,
-  '_PYGAME_C_API': notImplemented
+  'EventType': notImplemented$1,
+  '_PYGAME_C_API': notImplemented$1
 };
 
 function clearHandlers() {
@@ -768,33 +768,33 @@ var display = {
   __doc__: 'pygame module to control the display window and screen',
   __name__: 'pygame.display',
   __package__: Sk.builtin.none.none$,
-  __PYGAMEinit__: notImplemented,
+  __PYGAMEinit__: notImplemented$1,
 
-  quit: dud,
-  init: dud,
-  update: dud,
+  quit: dud(Sk.builtin.none.none$),
+  init: dud(Sk.builtin.none.none$),
+  update: dud(Sk.builtin.none.none$),
 
-  get_caption: notImplemented,
-  mode_ok: notImplemented,
-  set_icon: notImplemented,
-  get_active: notImplemented,
-  iconify: notImplemented,
-  set_gamma: notImplemented,
-  set_palette: notImplemented,
-  set_mode: notImplemented,
-  get_wm_info: notImplemented,
-  set_gamma_ramp: notImplemented,
-  Info: notImplemented,
-  get_surface: notImplemented,
-  toggle_fullscreen: notImplemented,
-  get_driver: notImplemented,
-  set_caption: notImplemented,
-  get_init: notImplemented,
-  flip: notImplemented,
-  _PYGAME_C_API: notImplemented,
-  gl_get_attribute: notImplemented,
-  gl_set_attribute: notImplemented,
-  list_modes: notImplemented
+  get_caption: notImplemented$1,
+  mode_ok: notImplemented$1,
+  set_icon: notImplemented$1,
+  get_active: notImplemented$1,
+  iconify: notImplemented$1,
+  set_gamma: notImplemented$1,
+  set_palette: notImplemented$1,
+  set_mode: notImplemented$1,
+  get_wm_info: notImplemented$1,
+  set_gamma_ramp: notImplemented$1,
+  Info: notImplemented$1,
+  get_surface: notImplemented$1,
+  toggle_fullscreen: notImplemented$1,
+  get_driver: notImplemented$1,
+  set_caption: notImplemented$1,
+  get_init: notImplemented$1,
+  flip: notImplemented$1,
+  _PYGAME_C_API: notImplemented$1,
+  gl_get_attribute: notImplemented$1,
+  gl_set_attribute: notImplemented$1,
+  list_modes: notImplemented$1
 };
 
 var globalScope = typeof window !== 'undefined' ? window : global;
@@ -890,9 +890,17 @@ var main = {
     clearHandlers();
     resetModifier();
     return remapInner(assign({
-      init: function init() {
-        //dud
-      },
+      init: dud,
+      quit: dud,
+
+      error: notImplemented,
+      get_error: notImplemented,
+      set_error: notImplemented,
+      get_sdl_version: notImplemented,
+      get_sql_byteorder: notImplemented,
+      register_quie: notImplemented,
+      encode_string: notImplemented,
+      encode_file_quit: notImplemented,
 
       display: makeModule(display),
       locals: makeModule(locals),

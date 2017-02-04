@@ -6,9 +6,9 @@ export default {
   __package__: Sk.builtin.none.none$,
   __PYGAMEinit__: notImplemented,
 
-  quit: dud,
-  init: dud,
-  update: dud,
+  quit: dud(Sk.builtin.none.none$),
+  init: dud(Sk.builtin.none.none$),
+  update: dud(Sk.builtin.none.none$),
 
   get_caption: notImplemented,
   mode_ok: notImplemented,

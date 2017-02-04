@@ -46,9 +46,9 @@ const event_locs = {
   '__doc__': 'pygame module for interacting with events and queues',
   '__name__': 'pygame.event',
 
-  'get_grab': dud,
-  'set_grab': dud,
-  'pump': dud,
+  'get_grab': dud(Sk.builtin.bool.true$),
+  'set_grab': dud(Sk.builtin.none.none$),
+  'pump': dud(Sk.builtin.none.none$),
 
   poll() {
     return queue.length ? queue.pop() : Sk.misceval.callsimOrSuspend(event_locs.Event, Sk.ffi.remapToPy(0));
