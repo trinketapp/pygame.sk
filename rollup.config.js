@@ -1,7 +1,7 @@
 import json from 'rollup-plugin-json';
 import babel from 'rollup-plugin-babel';
-// import istanbul from 'rollup-plugin-istanbul';
 import babelrc from 'babelrc-rollup';
+import commonjs from 'rollup-plugin-commonjs';
 
 let pkg = require('./package.json')
 let external = Object.keys(pkg.dependencies);
@@ -12,9 +12,9 @@ export default {
   plugins: [
     json(),
     babel(babelrc()),
-    // istanbul({
-    //   exclude: ['test/**/*', 'node_modules/**/*']
-    // })
+    commonjs({
+      include: 'node_modules/core-js/**'
+    })
   ],
   external: external,
   targets: [
