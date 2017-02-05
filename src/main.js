@@ -1,7 +1,7 @@
 import locals, { resetModifier } from './locals.js';
 import display from './display.js';
 import event, { clearHandlers, eventIsOf, eventConsumer } from './event.js';
-import { dud } from './shared.js';
+import { dud, notImplemented } from './shared.js';
 import Sk from './skulpt.js';
 
 const globalScope = typeof(window) !== 'undefined' ? window : global;

@@ -4,7 +4,7 @@
   (global.Pygame = factory());
 }(this, (function () { 'use strict';
 
-function notImplemented$1() {
+function notImplemented() {
   throw new Sk.builtin.NotImplementedError('this function is not implemented in Sklupt');
 }
 
@@ -245,8 +245,8 @@ var event_locs = {
   },
 
 
-  'EventType': notImplemented$1,
-  '_PYGAME_C_API': notImplemented$1
+  'EventType': notImplemented,
+  '_PYGAME_C_API': notImplemented
 };
 
 function clearHandlers() {
@@ -768,33 +768,33 @@ var display = {
   __doc__: 'pygame module to control the display window and screen',
   __name__: 'pygame.display',
   __package__: Sk.builtin.none.none$,
-  __PYGAMEinit__: notImplemented$1,
+  __PYGAMEinit__: notImplemented,
 
   quit: dud(Sk.builtin.none.none$),
   init: dud(Sk.builtin.none.none$),
   update: dud(Sk.builtin.none.none$),
 
-  get_caption: notImplemented$1,
-  mode_ok: notImplemented$1,
-  set_icon: notImplemented$1,
-  get_active: notImplemented$1,
-  iconify: notImplemented$1,
-  set_gamma: notImplemented$1,
-  set_palette: notImplemented$1,
-  set_mode: notImplemented$1,
-  get_wm_info: notImplemented$1,
-  set_gamma_ramp: notImplemented$1,
-  Info: notImplemented$1,
-  get_surface: notImplemented$1,
-  toggle_fullscreen: notImplemented$1,
-  get_driver: notImplemented$1,
-  set_caption: notImplemented$1,
-  get_init: notImplemented$1,
-  flip: notImplemented$1,
-  _PYGAME_C_API: notImplemented$1,
-  gl_get_attribute: notImplemented$1,
-  gl_set_attribute: notImplemented$1,
-  list_modes: notImplemented$1
+  get_caption: notImplemented,
+  mode_ok: notImplemented,
+  set_icon: notImplemented,
+  get_active: notImplemented,
+  iconify: notImplemented,
+  set_gamma: notImplemented,
+  set_palette: notImplemented,
+  set_mode: notImplemented,
+  get_wm_info: notImplemented,
+  set_gamma_ramp: notImplemented,
+  Info: notImplemented,
+  get_surface: notImplemented,
+  toggle_fullscreen: notImplemented,
+  get_driver: notImplemented,
+  set_caption: notImplemented,
+  get_init: notImplemented,
+  flip: notImplemented,
+  _PYGAME_C_API: notImplemented,
+  gl_get_attribute: notImplemented,
+  gl_set_attribute: notImplemented,
+  list_modes: notImplemented
 };
 
 var globalScope = typeof window !== 'undefined' ? window : global;
