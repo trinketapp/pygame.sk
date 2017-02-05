@@ -1,3 +1,5 @@
+import Sk from './skulpt.js';
+
 const none = Sk.builtin.none.none$;
 
 export function notImplemented() {

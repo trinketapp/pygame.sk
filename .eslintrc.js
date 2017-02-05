@@ -6,7 +6,6 @@ module.exports = {
         "mocha": true
     },
     "globals": {
-        "Sk": true
     },
     "extends": "eslint:recommended",
     "parserOptions": {

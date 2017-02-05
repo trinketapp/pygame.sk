@@ -1,4 +1,5 @@
 import { reveseLookup } from './locals.js';
+import Sk from './skulpt.js';
 
 var init = (function $__init__123$(self, type, dict) {
   Sk.builtin.pyCheckArgs('__init__', arguments, 2, 3, false, false);

@@ -1,4 +1,5 @@
 import { notImplemented, dud } from './shared.js';
+import Sk from './skulpt.js';
 
 export default {
   __doc__: 'pygame module to control the display window and screen',

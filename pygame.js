@@ -4,18 +4,20 @@
   (global.Pygame = factory());
 }(this, (function () { 'use strict';
 
+/* global Sk */
+
+if (typeof require === 'function') {
+  var fs = require('fs');
+  var skulpt = fs.readFileSync('./skulpt.min.js').toString();
+  (1, eval)(skulpt);
+}
+
 function notImplemented() {
   throw new Sk.builtin.NotImplementedError('this function is not implemented in Sklupt');
 }
 
 function dud(retval) {
   return retval;
-}
-
-if (typeof require === 'function') {
-  var fs = require('fs');
-  var skulpt = fs.readFileSync('./skulpt.min.js').toString();
-  (1, eval)(skulpt);
 }
 
 var init = function $__init__123$(self, type, dict) {

@@ -1,4 +1,5 @@
 import event from './event.js';
+import Sk from './skulpt.js';
 
 const locals = {
   '__doc__': 'Set of functions from PyGame that are handy to have in\nthe local namespace for your module',

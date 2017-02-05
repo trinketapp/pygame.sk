@@ -1,3 +1,5 @@
+/* global Sk */
+
 if (typeof(require) === 'function') {
   var fs = require('fs');
   var skulpt = fs.readFileSync('./skulpt.min.js').toString();
