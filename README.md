@@ -2,6 +2,8 @@
 
 > an implementation of the event part of pygame for skulpt
 
+[![Build Status](https://travis-ci.org/trinketapp/pygame.sk.svg?branch=master)](https://travis-ci.org/trinketapp/pygame.sk)
+
 ## Building
 
 Requirements: yarn, rollup
