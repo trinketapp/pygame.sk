@@ -786,6 +786,7 @@ var display = {
   quit: dud(Sk.builtin.none.none$),
   init: dud(Sk.builtin.none.none$),
   update: dud(Sk.builtin.none.none$),
+  set_mode: dud(Sk.builtin.none.none$),
 
   get_caption: notImplemented,
   mode_ok: notImplemented,
@@ -794,7 +795,6 @@ var display = {
   iconify: notImplemented,
   set_gamma: notImplemented,
   set_palette: notImplemented,
-  set_mode: notImplemented,
   get_wm_info: notImplemented,
   set_gamma_ramp: notImplemented,
   Info: notImplemented,
