@@ -8,6 +8,21 @@ let eventClass = event();
 
 describe('event', () => {
 
+  describe('event class', () => {
+
+    it('__getattr__ implementation in eventclass', () => {
+      let e = Sk.misceval.callsim(eventClass.Event, Sk.ffi.remapToPy(2), Sk.ffi.remapToPy({ 'key': 45 }));
+      strictEqual(Sk.ffi.remapToJs(Sk.abstr.gattr(e, 'key')), 45);
+    });
+
+    it('should have the correct __repr__', () => {
+      let e = Sk.misceval.callsim(eventClass.Event, Sk.ffi.remapToPy(2), Sk.ffi.remapToPy({ 'key': 45 }));
+      let repr = Sk.abstr.gattr(e, '__repr__');
+      strictEqual(Sk.ffi.remapToJs(Sk.misceval.callsim(repr)), '<Event(2-KeyDown {\'key\': 45})>');
+    });
+
+  });
+
   describe('isEventOf', () => {
 
     it('should not match if the event is not of type', () => {

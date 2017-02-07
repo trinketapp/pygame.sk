@@ -19,9 +19,20 @@ var repr = (function $__repr__123$(self){
 repr.co_name = new Sk.builtins['str']('__repr__');
 repr.co_varnames = ['self'];
 
+var getattr = (function $__getattr__123$(self, attr){
+  Sk.builtin.pyCheckArgs('__getattr__', arguments, 2, 2, false, false);
+
+  let dict = Sk.abstr.gattr(self, 'dict', false);
+
+  return dict.mp$subscript(attr);
+});
+repr.co_name = new Sk.builtins['str']('__getattr__');
+repr.co_varnames = ['self', 'attr'];
+
 var event = (function $EventType$class_outer(gbl, loc) {
   loc.__init__ = new Sk.builtins.function(init, gbl);
   loc.__repr__ = new Sk.builtins.function(repr, gbl);
+  loc.__getattr__ = new Sk.builtins.function(getattr, gbl);
   return;
 });
 event.co_name = new Sk.builtins['str']('Event');
