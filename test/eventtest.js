@@ -1,6 +1,7 @@
 import { eventIsOf, event, Sk, init } from '../';
 import { strictEqual } from 'assert';
 
+Sk.configure({ output: () => {} });
 Sk.doOneTimeInitialization();
 
 let eventClass = event();
