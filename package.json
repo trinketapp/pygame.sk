@@ -9,8 +9,6 @@
   "license": "MIT",
   "repository": "trinketapp/pygame.sk",
   "dependencies": {
-    "core-js": "^2.4.1",
-    "core-js-builder": "^2.4.1"
   },
   "devDependencies": {
     "babel-plugin-transform-object-assign": "^6.22.0",
@@ -26,7 +24,10 @@
     "rollup-plugin-commonjs": "^7.0.0",
     "rollup-plugin-istanbul": "^1.1.0",
     "rollup-plugin-json": "^2.1.0",
-    "rollup-watch": "^3.2.2"
+    "rollup-watch": "^3.2.2",
+    "bower": "^1.8.0",
+    "core-js": "^2.4.1",
+    "core-js-builder": "^2.4.1"
   },
   "scripts": {
     "prebuild": "eslint src test & node build-core-js-polyfill & bower install",
