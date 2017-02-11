@@ -29,7 +29,7 @@
     "uglify-js": "^2.7.5"
   },
   "scripts": {
-    "prebuild": "eslint src test & node build-core-js-polyfill & bower install",
+    "prebuild": "eslint src test & bower install",
     "build": "rollup -c",
     "watch": "rollup -c -w",
     "pretest": "npm run build",
