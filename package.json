@@ -8,14 +8,16 @@
   "author": "albertjan@trinket.io",
   "license": "MIT",
   "repository": "trinketapp/pygame.sk",
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "babel-plugin-transform-object-assign": "^6.22.0",
     "babel-preset-es2015": "^6.22.0",
     "babel-preset-es2015-rollup": "^3.0.0",
     "babel-register": "^6.22.0",
     "babelrc-rollup": "^3.0.0",
+    "bower": "^1.8.0",
+    "core-js": "^2.4.1",
+    "core-js-builder": "^2.4.1",
     "eslint": "^3.14.1",
     "istanbul": "^0.4.5",
     "mocha": "^3.2.0",
@@ -25,9 +27,7 @@
     "rollup-plugin-istanbul": "^1.1.0",
     "rollup-plugin-json": "^2.1.0",
     "rollup-watch": "^3.2.2",
-    "bower": "^1.8.0",
-    "core-js": "^2.4.1",
-    "core-js-builder": "^2.4.1"
+    "uglify-js": "^2.7.5"
   },
   "scripts": {
     "prebuild": "eslint src test & node build-core-js-polyfill & bower install",
