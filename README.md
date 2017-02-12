@@ -4,7 +4,7 @@
 
 [![Build Status](https://travis-ci.org/trinketapp/pygame.sk.svg?branch=master)](https://travis-ci.org/trinketapp/pygame.sk)
 
-[![Sauce Test Status](https://saucelabs.com/browser-matrix/albertjan.svg)](https://saucelabs.com/u/albertjan)
+[![Sauce Status](https://saucelabs.com/browser-matrix/albertjan.svg)](https://saucelabs.com/browser-matrix/albertjan.svg)
 
 ## Building
 
