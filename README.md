@@ -4,6 +4,8 @@
 
 [![Build Status](https://travis-ci.org/trinketapp/pygame.sk.svg?branch=master)](https://travis-ci.org/trinketapp/pygame.sk)
 
+[![Sauce Test Status](https://saucelabs.com/browser-matrix/YOUR_SAUCE_USERNAME.svg)](https://saucelabs.com/u/YOUR_SAUCE_USERNAME)
+
 ## Building
 
 Requirements: yarn, rollup

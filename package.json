@@ -21,9 +21,10 @@
     "eslint": "^3.14.1",
     "istanbul": "^0.4.5",
     "mocha": "^3.2.0",
+    "mocha-sauce": "pbakaus/mocha-sauce",
+    "node-uuid": "^1.4.7",
     "rollup": "^0.40.0",
     "rollup-plugin-babel": "^2.7.1",
-    "rollup-plugin-istanbul": "^1.1.0",
     "rollup-plugin-json": "^2.1.0",
     "rollup-watch": "^3.2.2",
     "uglify-js": "^2.7.5"
@@ -34,6 +35,8 @@
     "watch": "rollup -c -w",
     "pretest": "npm run build",
     "test": "mocha",
+    "posttest": "rollup -c rollup.config.test.js & npm run browsertest",
+    "browsertest": "mocha pygame-tests.js",
     "prepublish": "npm test"
   }
 }

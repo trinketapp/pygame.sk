@@ -1,0 +1,19 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Mocha Tests</title>
+  <link href="http://cdn.rawgit.com/mochajs/mocha/2.2.5/mocha.css" rel="stylesheet" />
+</head>
+<body>
+  <div id="mocha"></div>
+  <script src="node_modules/mocha/mocha.js"></script>
+  <script src="bower_components/skulpt/skulpt.min.js"></script>
+  <script src="bower_components/core.js/client/core.min.js"></script>
+  <script>mocha.setup('bdd')</script>
+  <script src="pygame-tests.js"></script>
+  <script src="node_modules/mocha-sauce/client.js"></script>
+  <script>
+    mochaSaucePlease();
+  </script>
+</body>
+</html>

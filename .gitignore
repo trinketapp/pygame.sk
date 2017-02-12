@@ -1,3 +1,5 @@
 node_modules/*
 pygame.mjs
 bower_components/
+pygame-tests.js
+pygame-tests.mjs

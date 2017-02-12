@@ -1,10 +1,22 @@
-import { eventIsOf, event, Sk, init } from '../';
-import { strictEqual } from 'assert';
+import event, { eventIsOf } from '../src/event.js';
+import main from '../src/main.js';
+import Sk from '../src/skulpt.js';
+
+function strictEqual(actual, expected, message) {
+  if (actual !== expected) {
+    throw new Error(`Expected: ${expected} actual: ${actual} ${message || ''}`);
+  }
+}
 
 Sk.configure({ output: () => {} });
 Sk.doOneTimeInitialization();
 
-let eventClass = event();
+const globalScope = typeof(window) !== 'undefined' ? window : global;
+const eventClass = event();
+const init = main.init;
+
+if (!globalScope.addEventListener) globalScope.addEventListener = function () {};
+globalScope.listeners = {};
 
 describe('event', () => {
 
@@ -46,22 +58,18 @@ describe('event', () => {
   describe('javascript interface event listeners', () => {
 
     it('should add the default listeners to global scope when initialized', () => {
-      global.addEventListener = function () {};
-
       init('');
 
-      strictEqual(global.listeners['keyup'].length, 1);
-      strictEqual(global.listeners['keydown'].length, 1);
+      strictEqual(globalScope.listeners['keyup'].length, 1);
+      strictEqual(globalScope.listeners['keydown'].length, 1);
     });
 
     it('shouldn\'t add the default listeners twice', () => {
-      global.addEventListener = function () {};
-
       init('');
       init('');
 
-      strictEqual(global.listeners['keyup'].length, 1);
-      strictEqual(global.listeners['keydown'].length, 1);
+      strictEqual(globalScope.listeners['keyup'].length, 1);
+      strictEqual(globalScope.listeners['keydown'].length, 1);
     });
 
   });
