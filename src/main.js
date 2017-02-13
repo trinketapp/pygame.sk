@@ -49,28 +49,43 @@ const hasListener = (eventType, listenerName) => {
   return res;
 };
 
-function addPygameEventListener(eventType, customListener) {
+// takes a a predicate and returns a function
+// that returns a function that takes a consumer
+// that returns a function that takes an event
+// and calls the consumer when the event
+function eventFilter(predicate) {
+  return (consumer) => e => {
+    if (predicate(e)) { consumer(e); }
+  };
+}
+
+function addPygameEventListener(eventFilter, eventType, customListener) {
+  // type => e => void
+  let consumer = eventConsumer(eventType);
+  // (e => void) => (e => void)
+  let filteredConsumer = eventFilter(consumer);
   if (customListener) {
-    customListener(eventConsumer(eventType));
+    customListener(filteredConsumer);
   } else {
-    let listener = eventConsumer(eventType);
-    let listenerAdded = hasListener(eventType, listener.name);
+    let listenerAdded = hasListener(eventType, consumer.name);
     if (!listenerAdded) {
-      appendListener(eventType, listener.name);
-      globalScope.addEventListener(eventType, listener);
+      appendListener(eventType, consumer.name);
+      globalScope.addEventListener(eventType, filteredConsumer);
     }
   }
 }
 
-function initializeHandlers(keydownListener, keyupListener) {
-  addPygameEventListener('keyup', keyupListener);
-  addPygameEventListener('keydown', keydownListener);
+function initializeHandlers(eventFilter, keydownListener, keyupListener) {
+  addPygameEventListener(eventFilter, 'keyup', keyupListener);
+  addPygameEventListener(eventFilter, 'keydown', keydownListener);
 }
 
 export default {
-  init(path, keydownListener, keyupListener) {
+  init(path, eventFilterPredicate, keydownListener, keyupListener) {
 
-    initializeHandlers(keydownListener, keyupListener);
+    let _efp = eventFilterPredicate || (() => true);
+
+    initializeHandlers(eventFilter(_efp), keydownListener, keyupListener);
 
     Sk.externalLibraries = Sk.externalLibraries || {};
 

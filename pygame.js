@@ -859,28 +859,49 @@ var hasListener = function hasListener(eventType, listenerName) {
   return res;
 };
 
-function addPygameEventListener(eventType, customListener) {
+// takes a a predicate and returns a function
+// that returns a function that takes a consumer
+// that returns a function that takes an event
+// and calls the consumer when the event
+function eventFilter(predicate) {
+  return function (consumer) {
+    return function (e) {
+      if (predicate(e)) {
+        consumer(e);
+      }
+    };
+  };
+}
+
+function addPygameEventListener(eventFilter, eventType, customListener) {
+  // type => e => void
+  var consumer = eventConsumer(eventType);
+  // (e => void) => (e => void)
+  var filteredConsumer = eventFilter(consumer);
   if (customListener) {
-    customListener(eventConsumer(eventType));
+    customListener(filteredConsumer);
   } else {
-    var listener = eventConsumer(eventType);
-    var listenerAdded = hasListener(eventType, listener.name);
+    var listenerAdded = hasListener(eventType, consumer.name);
     if (!listenerAdded) {
-      appendListener(eventType, listener.name);
-      globalScope.addEventListener(eventType, listener);
+      appendListener(eventType, consumer.name);
+      globalScope.addEventListener(eventType, filteredConsumer);
     }
   }
 }
 
-function initializeHandlers(keydownListener, keyupListener) {
-  addPygameEventListener('keyup', keyupListener);
-  addPygameEventListener('keydown', keydownListener);
+function initializeHandlers(eventFilter, keydownListener, keyupListener) {
+  addPygameEventListener(eventFilter, 'keyup', keyupListener);
+  addPygameEventListener(eventFilter, 'keydown', keydownListener);
 }
 
 var main = {
-  init: function init(path, keydownListener, keyupListener) {
+  init: function init(path, eventFilterPredicate, keydownListener, keyupListener) {
 
-    initializeHandlers(keydownListener, keyupListener);
+    var _efp = eventFilterPredicate || function () {
+      return true;
+    };
+
+    initializeHandlers(eventFilter(_efp), keydownListener, keyupListener);
 
     Sk.externalLibraries = Sk.externalLibraries || {};
 

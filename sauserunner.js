@@ -16,6 +16,7 @@ var sauce = new MochaSauce({
 // setup what browsers to test with
 sauce.browser({ browserName: "chrome", platform: "Windows 7" });
 sauce.browser({ browserName: "internet explorer", platform: "Windows 7", version: "10.0" });
+sauce.browser({ browserName: "internet explorer", platform: "Windows 7", version: "11.0" });
 sauce.browser({ browserName: "firefox", platform: "Windows 7" });
 sauce.browser({ browserName: "chrome", platform: "macOS 10.12" });
 sauce.browser({ browserName: "safari", platform: "macOS 10.12" });
