@@ -10,6 +10,6 @@ function PygameError() {
   Sk.builtin.StandardError.apply(this, arguments);
 }
 
-Sk.abstr.setUpInheritance('PygameError', PygameError, Sk.builtin.StandardError);
+Sk.abstr.setUpInheritance('pygame.error', PygameError, Sk.builtin.StandardError);
 
 export { PygameError };

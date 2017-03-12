@@ -1,12 +1,7 @@
 import event, { eventIsOf, initialize, unInitialize } from '../src/event.js';
 import main from '../src/main.js';
 import Sk from '../src/skulpt.js';
-
-function strictEqual(actual, expected, message) {
-  if (actual !== expected) {
-    throw new Error(`Expected: ${expected} actual: ${actual} ${message || ''}`);
-  }
-}
+import { strictEqual } from './testhelper.js';
 
 Sk.configure({ output: () => {} });
 Sk.doOneTimeInitialization();
