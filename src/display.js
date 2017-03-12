@@ -1,6 +1,6 @@
 import { notImplemented, dud } from './shared.js';
-import { initialize } from './event.js';
 import SurfaceClass from './surface.js';
+import { PygameError } from './exceptions.js';
 import Sk from './skulpt.js';
 
 function surface(locs) {
@@ -9,7 +9,23 @@ function surface(locs) {
   return locs;
 }
 
-export { surface };
+var initialized = false;
+
+function throwIfNotInitialized() {
+  if (!initialized) {
+    throw new PygameError('video system not initialized');
+  }
+}
+
+function initialize() {
+  initialized = true;
+}
+
+function unInitialize() {
+  initialized = false;
+}
+
+export { surface, initialize, unInitialize, throwIfNotInitialized };
 
 export default function (Surface) {
   return {
@@ -28,6 +44,9 @@ export default function (Surface) {
       initialize();
       return Sk.misceval.callsim(Surface, size);
     },
+    get_init: function() {
+      return Sk.ffi.remapToPy(initialized);
+    },
 
     get_caption: notImplemented,
     mode_ok: notImplemented,
@@ -43,7 +62,6 @@ export default function (Surface) {
     toggle_fullscreen: notImplemented,
     get_driver: notImplemented,
     set_caption: notImplemented,
-    get_init: notImplemented,
     flip: notImplemented,
     _PYGAME_C_API: notImplemented,
     gl_get_attribute: notImplemented,

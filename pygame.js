@@ -70,7 +70,7 @@ function PygameError() {
   Sk.builtin.StandardError.apply(this, arguments);
 }
 
-Sk.abstr.setUpInheritance('PygameError', PygameError, Sk.builtin.StandardError);
+Sk.abstr.setUpInheritance('pygame.error', PygameError, Sk.builtin.StandardError);
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
   return typeof obj;
@@ -170,13 +170,158 @@ var slicedToArray = function () {
   };
 }();
 
+// Surface((width, height), flags=0, depth=0, masks=None) -> Surface
+// Surface((width, height), flags=0, Surface) -> Surface
+
+var init$1 = function $__init__123$(self, size) {
+  Sk.builtin.pyCheckArgs('__init__', arguments, 2, 5, false, false);
+
+  var _Sk$ffi$remapToJs = Sk.ffi.remapToJs(size);
+
+  var _Sk$ffi$remapToJs2 = slicedToArray(_Sk$ffi$remapToJs, 2);
+
+  self.width = _Sk$ffi$remapToJs2[0];
+  self.height = _Sk$ffi$remapToJs2[1];
+
+
+  if (self.width < 0 || self.height < 0) {
+    throw new PygameError('Invalid resolution for Surface');
+  }
+
+  // ignoring other args.
+  return Sk.builtin.none.none$;
+};
+init$1.co_name = new Sk.builtins['str']('__init__');
+init$1.co_varnames = ['self', 'size', 'flags', 'depth', 'masks'];
+init$1.$defaults = [new Sk.builtin.int_(0), new Sk.builtin.int_(0), Sk.builtin.none.none$];
+
+var repr$1 = function $__repr__123$(self) {
+  var width = Sk.ffi.remapToJs(self.width);
+  var height = Sk.ffi.remapToJs(self.height);
+
+  return Sk.ffi.remapToPy('<Surface(' + width + 'x' + height + 'x32 SW)>');
+};
+repr$1.co_name = new Sk.builtins['str']('__repr__');
+repr$1.co_varnames = ['self'];
+
+function get_height(self) {
+  Sk.builtin.pyCheckArgs('get_height', arguments, 1, 1, false, false);
+
+  return self.height;
+}
+get_height.co_name = new Sk.builtins['str']('get_height');
+get_height.co_varnames = ['self'];
+
+function get_width(self) {
+  Sk.builtin.pyCheckArgs('get_width', arguments, 1, 1, false, false);
+
+  return self.width;
+}
+get_width.co_name = new Sk.builtins['str']('get_width');
+get_width.co_varnames = ['self'];
+
+function get_size(self) {
+  Sk.builtin.pyCheckArgs('get_size', arguments, 1, 1, false, false);
+
+  return Sk.builtin.tuple([self.width, self.height]);
+}
+get_size.co_name = new Sk.builtins['str']('get_size');
+get_size.co_varnames = ['self'];
+
+function get_flags() {
+  Sk.builtin.pyCheckArgs('get_flags', arguments, 1, 1, false, false);
+
+  return new Sk.builtin.int_(0);
+}
+get_flags.co_name = new Sk.builtins['str']('get_flags');
+get_flags.co_varnames = ['self'];
+
+var surface$1 = function $Surface$class_outer(gbl, loc) {
+  loc.__init__ = new Sk.builtins.function(init$1, gbl);
+  loc.__repr__ = new Sk.builtins.function(repr$1, gbl);
+
+  loc.get_width = new Sk.builtins.function(get_width, gbl);
+  loc.get_height = new Sk.builtins.function(get_width, gbl);
+  loc.get_size = new Sk.builtins.function(get_size, gbl);
+  loc.get_flags = new Sk.builtins.function(get_flags, gbl);
+
+  return;
+};
+
+surface$1.co_name = new Sk.builtins['str']('Surface');
+
+var SurfaceClass = function (gbl) {
+  return Sk.misceval.buildClass(gbl, surface$1, 'Surface', []);
+};
+
+function surface(locs) {
+  locs.Surface = SurfaceClass(locs);
+  locs.Surface.$isclass = true;
+  return locs;
+}
+
+var initialized = false;
+
+function throwIfNotInitialized() {
+  if (!initialized) {
+    throw new PygameError('video system not initialized');
+  }
+}
+
+function initialize() {
+  initialized = true;
+}
+
+var display = function (Surface) {
+  return {
+    __doc__: 'pygame module to control the display window and screen',
+    __name__: 'pygame.display',
+    __package__: Sk.builtin.none.none$,
+    __PYGAMEinit__: notImplemented,
+
+    quit: dud(Sk.builtin.none.none$),
+    init: function init() {
+      initialize();
+      return Sk.builtin.none.none$;
+    },
+
+    update: dud(Sk.builtin.none.none$),
+    set_mode: function set_mode(size) {
+      initialize();
+      return Sk.misceval.callsim(Surface, size);
+    },
+
+    get_init: function get_init() {
+      return Sk.ffi.remapToPy(initialized);
+    },
+
+    get_caption: notImplemented,
+    mode_ok: notImplemented,
+    set_icon: notImplemented,
+    get_active: notImplemented,
+    iconify: notImplemented,
+    set_gamma: notImplemented,
+    set_palette: notImplemented,
+    get_wm_info: notImplemented,
+    set_gamma_ramp: notImplemented,
+    Info: notImplemented,
+    get_surface: notImplemented,
+    toggle_fullscreen: notImplemented,
+    get_driver: notImplemented,
+    set_caption: notImplemented,
+    flip: notImplemented,
+    _PYGAME_C_API: notImplemented,
+    gl_get_attribute: notImplemented,
+    gl_set_attribute: notImplemented,
+    list_modes: notImplemented
+  };
+};
+
 var notifiers = [];
 var queue = [];
 
 var blackList = new Set();
 var whiteList = new Set();
-
-var initialized = false;
 
 function eventConsumer(eventtype) {
   return function pygameEventListener(event) {
@@ -218,16 +363,6 @@ function isAllowed(e) {
   }
 
   return true;
-}
-
-function throwIfNotInitialized() {
-  if (!initialized) {
-    throw new PygameError('video system not initialized');
-  }
-}
-
-function initialize() {
-  initialized = true;
 }
 
 var event_locs = {
@@ -867,139 +1002,6 @@ function mapEvent(eventtype, jsevent) {
 function resetModifier() {
   modifier = 0;
 }
-
-// Surface((width, height), flags=0, depth=0, masks=None) -> Surface
-// Surface((width, height), flags=0, Surface) -> Surface
-
-var init$1 = function $__init__123$(self, size) {
-  Sk.builtin.pyCheckArgs('__init__', arguments, 2, 5, false, false);
-
-  var _Sk$ffi$remapToJs = Sk.ffi.remapToJs(size);
-
-  var _Sk$ffi$remapToJs2 = slicedToArray(_Sk$ffi$remapToJs, 2);
-
-  self.width = _Sk$ffi$remapToJs2[0];
-  self.height = _Sk$ffi$remapToJs2[1];
-
-
-  if (self.width < 0 || self.height < 0) {
-    throw new PygameError('Invalid resolution for Surface');
-  }
-
-  // ignoring other args.
-  return Sk.builtin.none.none$;
-};
-init$1.co_name = new Sk.builtins['str']('__init__');
-init$1.co_varnames = ['self', 'size', 'flags', 'depth', 'masks'];
-init$1.$defaults = [new Sk.builtin.int_(0), new Sk.builtin.int_(0), Sk.builtin.none.none$];
-
-var repr$1 = function $__repr__123$(self) {
-  var width = Sk.ffi.remapToJs(self.width);
-  var height = Sk.ffi.remapToJs(self.height);
-
-  return Sk.ffi.remapToPy('<Surface(' + width + 'x' + height + 'x32 SW)>');
-};
-repr$1.co_name = new Sk.builtins['str']('__repr__');
-repr$1.co_varnames = ['self'];
-
-function get_height(self) {
-  Sk.builtin.pyCheckArgs('get_height', arguments, 1, 1, false, false);
-
-  return self.height;
-}
-get_height.co_name = new Sk.builtins['str']('get_height');
-get_height.co_varnames = ['self'];
-
-function get_width(self) {
-  Sk.builtin.pyCheckArgs('get_width', arguments, 1, 1, false, false);
-
-  return self.width;
-}
-get_width.co_name = new Sk.builtins['str']('get_width');
-get_width.co_varnames = ['self'];
-
-function get_size(self) {
-  Sk.builtin.pyCheckArgs('get_size', arguments, 1, 1, false, false);
-
-  return Sk.builtin.tuple([self.width, self.height]);
-}
-get_size.co_name = new Sk.builtins['str']('get_size');
-get_size.co_varnames = ['self'];
-
-function get_flags() {
-  Sk.builtin.pyCheckArgs('get_flags', arguments, 1, 1, false, false);
-
-  return new Sk.builtin.int_(0);
-}
-get_flags.co_name = new Sk.builtins['str']('get_flags');
-get_flags.co_varnames = ['self'];
-
-var surface$1 = function $Surface$class_outer(gbl, loc) {
-  loc.__init__ = new Sk.builtins.function(init$1, gbl);
-  loc.__repr__ = new Sk.builtins.function(repr$1, gbl);
-
-  loc.get_width = new Sk.builtins.function(get_width, gbl);
-  loc.get_height = new Sk.builtins.function(get_width, gbl);
-  loc.get_size = new Sk.builtins.function(get_size, gbl);
-  loc.get_flags = new Sk.builtins.function(get_flags, gbl);
-
-  return;
-};
-
-surface$1.co_name = new Sk.builtins['str']('Surface');
-
-var SurfaceClass = function (gbl) {
-  return Sk.misceval.buildClass(gbl, surface$1, 'Surface', []);
-};
-
-function surface(locs) {
-  locs.Surface = SurfaceClass(locs);
-  locs.Surface.$isclass = true;
-  return locs;
-}
-
-var display = function (Surface) {
-  return {
-    __doc__: 'pygame module to control the display window and screen',
-    __name__: 'pygame.display',
-    __package__: Sk.builtin.none.none$,
-    __PYGAMEinit__: notImplemented,
-
-    quit: dud(Sk.builtin.none.none$),
-    init: function init() {
-      initialize();
-      return Sk.builtin.none.none$;
-    },
-
-    update: dud(Sk.builtin.none.none$),
-    set_mode: function set_mode(size) {
-      initialize();
-      return Sk.misceval.callsim(Surface, size);
-    },
-
-
-    get_caption: notImplemented,
-    mode_ok: notImplemented,
-    set_icon: notImplemented,
-    get_active: notImplemented,
-    iconify: notImplemented,
-    set_gamma: notImplemented,
-    set_palette: notImplemented,
-    get_wm_info: notImplemented,
-    set_gamma_ramp: notImplemented,
-    Info: notImplemented,
-    get_surface: notImplemented,
-    toggle_fullscreen: notImplemented,
-    get_driver: notImplemented,
-    set_caption: notImplemented,
-    get_init: notImplemented,
-    flip: notImplemented,
-    _PYGAME_C_API: notImplemented,
-    gl_get_attribute: notImplemented,
-    gl_set_attribute: notImplemented,
-    list_modes: notImplemented
-  };
-};
 
 var globalScope = typeof window !== 'undefined' ? window : global;
 

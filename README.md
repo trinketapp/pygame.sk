@@ -27,7 +27,7 @@ After this you can `import pygame` in skulpt.
 ## API completeness
 
 - [x] `pygame` - module importable
-  - [x] `init` - dud -> None
+  - [x] `init` - initialises the eventmodule and return a tuple. (6, 0) initialisation succeeded.
   - [x] `quit` - dud -> None
   - [ ] `error` — standard pygame exception
   - [ ] `get_error` — get the current error message
@@ -54,11 +54,11 @@ After this you can `import pygame` in skulpt.
   - [x] `EventType` - replaced with an integer
 - [x] `pygame.locals` - module importable and complete
 - [x] `pygame.display` - module importable
-  - [x] `init` - dud -> None
+  - [x] `init` - initialized the event module
   - [x] `quit` — dud -> None
   - [x] `update` — dud -> None
-  - [ ] `get_init` — Returns True if the display module has been initialized
-  - [ ] `set_mode` — Initialize a window or screen for display
+  - [x] `get_init` — Returns True if the display module has been initialized
+  - [x] `set_mode` — Initialize a window or screen for display, and returns initialized Surface, and initializes the event module
   - [ ] `get_surface` — Get a reference to the currently set display surface
   - [ ] `flip` — Update the full display Surface to the screen
   - [ ] `get_driver` — Get the name of the pygame display backend
@@ -77,3 +77,54 @@ After this you can `import pygame` in skulpt.
   - [ ] `set_caption` — Set the current window caption
   - [ ] `get_caption` — Get the current window caption
   - [ ] `set_palette` — Set the display color palette for indexed displays
+- [x] `pygame.Surface` - pygame object for representing images
+  - [x] `Surface((width, height), flags=0, depth=0, masks=None)` -> Surface (both constuctors do the same thing)
+  - [x] `Surface((width, height), flags=0, Surface)` -> Surface
+  - [x] `pygame.Surface.get_flags` — get the additional flags used for the Surface
+  - [x] `pygame.Surface.get_size` — get the dimensions of the Surface
+  - [x] `pygame.Surface.get_width` — get the width of the Surface
+  - [x] `pygame.Surface.get_height` — get the height of the Surface
+  - [ ] `pygame.Surface.blit` — draw one image onto another
+  - [ ] `pygame.Surface.convert` — change the pixel format of an image
+  - [ ] `pygame.Surface.convert_alpha` — change the pixel format of an image including per pixel alphas
+  - [ ] `pygame.Surface.copy` — create a new copy of a Surface
+  - [ ] `pygame.Surface.fill` — fill Surface with a solid color
+  - [ ] `pygame.Surface.scroll` — Shift the surface image in place
+  - [ ] `pygame.Surface.set_colorkey` — Set the transparent colorkey
+  - [ ] `pygame.Surface.get_colorkey` — Get the current transparent colorkey
+  - [ ] `pygame.Surface.set_alpha` — set the alpha value for the full Surface image
+  - [ ] `pygame.Surface.get_alpha` — get the current Surface transparency value
+  - [ ] `pygame.Surface.lock` — lock the Surface memory for pixel access
+  - [ ] `pygame.Surface.unlock` — unlock the Surface memory from pixel access
+  - [ ] `pygame.Surface.mustlock` — test if the Surface requires locking
+  - [ ] `pygame.Surface.get_locked` — test if the Surface is current locked
+  - [ ] `pygame.Surface.get_locks` — Gets the locks for the Surface
+  - [ ] `pygame.Surface.get_at` — get the color value at a single pixel
+  - [ ] `pygame.Surface.set_at` — set the color value for a single pixel
+  - [ ] `pygame.Surface.get_at_mapped` — get the mapped color value at a single pixel
+  - [ ] `pygame.Surface.get_palette` — get the color index palette for an 8bit Surface
+  - [ ] `pygame.Surface.get_palette_at` — get the color for a single entry in a palette
+  - [ ] `pygame.Surface.set_palette` — set the color palette for an 8bit Surface
+  - [ ] `pygame.Surface.set_palette_at` — set the color for a single index in an 8bit Surface palette
+  - [ ] `pygame.Surface.map_rgb` — convert a color into a mapped color value
+  - [ ] `pygame.Surface.unmap_rgb` — convert a mapped integer color value into a Color
+  - [ ] `pygame.Surface.set_clip` — set the current clipping area of the Surface
+  - [ ] `pygame.Surface.get_clip` — get the current clipping area of the Surface
+  - [ ] `pygame.Surface.subsurface` — create a new surface that references its parent
+  - [ ] `pygame.Surface.get_parent` — find the parent of a subsurface
+  - [ ] `pygame.Surface.get_abs_parent` — find the top level parent of a subsurface
+  - [ ] `pygame.Surface.get_offset` — find the position of a child subsurface inside a parent
+  - [ ] `pygame.Surface.get_abs_offset` — find the absolute position of a child subsurface inside its top level parent
+  - [ ] `pygame.Surface.get_rect` — get the rectangular area of the Surface
+  - [ ] `pygame.Surface.get_bitsize` — get the bit depth of the Surface pixel format
+  - [ ] `pygame.Surface.get_bytesize` — get the bytes used per Surface pixel
+  - [ ] `pygame.Surface.get_pitch` — get the number of bytes used per Surface row
+  - [ ] `pygame.Surface.get_masks` — the bitmasks needed to convert between a color and a mapped integer
+  - [ ] `pygame.Surface.set_masks` — set the bitmasks needed to convert between a color and a mapped integer
+  - [ ] `pygame.Surface.get_shifts` — the bit shifts needed to convert between a color and a mapped integer
+  - [ ] `pygame.Surface.set_shifts` — sets the bit shifts needed to convert between a color and a mapped integer
+  - [ ] `pygame.Surface.get_losses` — the significant bits used to convert between a color and a mapped integer
+  - [ ] `pygame.Surface.get_bounding_rect` — find the smallest rect containing data
+  - [ ] `pygame.Surface.get_view` — return a buffer view of the Surface’s pixels.
+  - [ ] `pygame.Surface.get_buffer` — acquires a buffer object for the pixels of the Surface.
+  - [ ] `pygame.Surface._pixels_address` — pixel buffer address

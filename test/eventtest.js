@@ -1,7 +1,8 @@
-import event, { eventIsOf, initialize, unInitialize } from '../src/event.js';
+import event, { eventIsOf } from '../src/event.js';
 import main from '../src/main.js';
 import Sk from '../src/skulpt.js';
 import { strictEqual } from './testhelper.js';
+import { initialize, unInitialize } from '../src/display.js';
 
 Sk.configure({ output: () => {} });
 Sk.doOneTimeInitialization();
@@ -17,7 +18,7 @@ describe('event', () => {
 
   beforeEach(() => {
     unInitialize();
-  })
+  });
 
   describe('event class', () => {
 

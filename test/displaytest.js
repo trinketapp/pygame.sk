@@ -1,7 +1,6 @@
-import { unInitialize, throwIfNotInitialized } from '../src/event.js';
 import main from '../src/main.js';
 import Sk from '../src/skulpt.js';
-import displayMod from '../src/display.js';
+import displayMod, { unInitialize, throwIfNotInitialized, initialize } from '../src/display.js';
 import { strictEqual } from './testhelper.js';
 
 Sk.configure({ output: () => {} });
@@ -21,6 +20,12 @@ describe('display', () => {
     strictEqual(res.tp$name, 'Surface');
     strictEqual(res.width, 1);
     strictEqual(res.height, 1);
+  });
+
+  it('should return the correct value for get_init', () => {
+    strictEqual(Sk.ffi.remapToJs(display.get_init()), false);
+    initialize();
+    strictEqual(Sk.ffi.remapToJs(display.get_init()), true);
   });
 
   it('should have initialized events after set_mode', () => {

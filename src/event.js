@@ -2,15 +2,13 @@ import { notImplemented, dud } from './shared.js';
 import { mapEvent, reveseLookup } from './locals.js';
 import Sk from './skulpt.js';
 import EventClass from './eventclass.js';
-import { PygameError } from './exceptions.js';
+import { initialize, unInitialize, throwIfNotInitialized } from './display.js';
 
 const notifiers = [];
 let queue = [];
 
 const blackList = new Set();
 const whiteList = new Set();
-
-var initialized = false;
 
 function eventConsumer(eventtype) {
   return function pygameEventListener(event) {
@@ -42,20 +40,6 @@ function isAllowed(e) {
   }
 
   return true;
-}
-
-function throwIfNotInitialized() {
-  if (!initialized) {
-    throw new PygameError('video system not initialized');
-  }
-}
-
-function initialize() {
-  initialized = true;
-}
-
-function unInitialize() {
-  initialized = false;
 }
 
 const event_locs = {
