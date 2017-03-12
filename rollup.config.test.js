@@ -6,7 +6,7 @@ let pkg = require('./package.json')
 let external = Object.keys(pkg.dependencies);
 
 export default {
-  entry: 'test/eventtest.js',
+  entry: 'test/tests.js',
 
   plugins: [
     json(),

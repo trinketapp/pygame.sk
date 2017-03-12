@@ -1,6 +1,6 @@
 import locals, { resetModifier } from './locals.js';
-import display from './display.js';
-import event, { clearHandlers, eventIsOf, eventConsumer } from './event.js';
+import display, { surface } from './display.js';
+import event, { clearHandlers, eventIsOf, eventConsumer, initialize } from './event.js';
 import { dud, notImplemented } from './shared.js';
 import Sk from './skulpt.js';
 
@@ -80,6 +80,11 @@ function initializeHandlers(eventFilter, keydownListener, keyupListener) {
   addPygameEventListener(eventFilter, 'keydown', keydownListener);
 }
 
+function displayBuilder(locs) {
+  locs.display = makeModule(display(locs.Surface));
+  return locs;
+}
+
 export default {
   init(path, eventFilterPredicate, keydownListener, keyupListener) {
 
@@ -107,23 +112,31 @@ export default {
   main() {
     clearHandlers();
     resetModifier();
-    return remapInner(assign({
-      init: dud,
-      quit: dud,
+    return remapInner(
+        displayBuilder(
+          surface(
+            assign({
+              init() {
+                initialize();
+                return new Sk.builtin.tuple([6,0]);
+              },
+              quit: dud,
 
-      error: notImplemented,
-      get_error: notImplemented,
-      set_error: notImplemented,
-      get_sdl_version: notImplemented,
-      get_sql_byteorder: notImplemented,
-      register_quie: notImplemented,
-      encode_string: notImplemented,
-      encode_file_quit: notImplemented,
+              error: notImplemented,
+              get_error: notImplemented,
+              set_error: notImplemented,
+              get_sdl_version: notImplemented,
+              get_sql_byteorder: notImplemented,
+              register_quie: notImplemented,
+              encode_string: notImplemented,
+              encode_file_quit: notImplemented,
 
-      display: makeModule(display),
-      locals: makeModule(locals),
-      event: makeModule(event())
-    }, locals));
+              locals: makeModule(locals),
+              event: makeModule(event())
+            }, locals)
+          )
+        )
+      );
   },
   locals: remapInner(locals),
   display: remapInner(display),

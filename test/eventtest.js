@@ -1,4 +1,4 @@
-import event, { eventIsOf } from '../src/event.js';
+import event, { eventIsOf, initialize, unInitialize } from '../src/event.js';
 import main from '../src/main.js';
 import Sk from '../src/skulpt.js';
 
@@ -19,6 +19,10 @@ if (!globalScope.addEventListener) globalScope.addEventListener = function () {}
 globalScope.listeners = {};
 
 describe('event', () => {
+
+  beforeEach(() => {
+    unInitialize();
+  })
 
   describe('event class', () => {
 
@@ -73,6 +77,8 @@ describe('event', () => {
     });
 
     it('should filter events based on the predicate', () => {
+      initialize();
+
       let keyDown;
       init('', e => e.key == 'b', e => keyDown = e);
 
@@ -88,6 +94,7 @@ describe('event', () => {
   describe('modifier tests', () => {
 
     it('should add the capslock modifier when it\'s on', () => {
+      initialize();
       let keyDown;
       init('', null, (eventHandler) => { keyDown = eventHandler; },  () => { });
 
@@ -97,6 +104,7 @@ describe('event', () => {
     });
 
     it('should add the shift modifier when it\'s held', () => {
+      initialize();
       let keyDown;
       init('', null, (eventHandler) => { keyDown = eventHandler; }, () => { });
 
@@ -115,16 +123,19 @@ describe('event', () => {
   describe('queue functions', () => {
 
     it('should return an unknown event when the queue is empty on poll', () => {
+      initialize();
       let event = Sk.misceval.callsim(eventClass.poll);
       strictEqual(eventIsOf(event, [0]), true);
     });
 
     it('should return an unknown event when the queue is empty on peek', () => {
+      initialize();
       let event = Sk.misceval.callsim(eventClass.peek);
       strictEqual(eventIsOf(event, [0]), true);
     });
 
     it('should return a bool if an event of type is on the queue or not', () => {
+      initialize();
       let event = Sk.misceval.callsim(eventClass.Event, 2);
       Sk.misceval.callsim(eventClass.post, event);
 
@@ -136,6 +147,7 @@ describe('event', () => {
     });
 
     it('should be able to post an event on the queue', () => {
+      initialize();
       let event = Sk.misceval.callsim(eventClass.Event, 2);
       Sk.misceval.callsim(eventClass.post, event);
 
@@ -143,6 +155,7 @@ describe('event', () => {
     });
 
     it('should get all events on queue of type', () => {
+      initialize();
       let events = [
         Sk.misceval.callsim(eventClass.Event, 2),
         Sk.misceval.callsim(eventClass.Event, 3),
@@ -156,6 +169,7 @@ describe('event', () => {
     });
 
     it('should get all events on queue', () => {
+      initialize();
       let events = [
         Sk.misceval.callsim(eventClass.Event, 2),
         Sk.misceval.callsim(eventClass.Event, 3),
@@ -175,6 +189,7 @@ describe('event', () => {
   describe('blocking and allowing', () => {
 
     it('should block events when it\'s set to be blocked', () => {
+      initialize();
       Sk.misceval.callsim(eventClass.set_blocked, Sk.ffi.remapToPy(2));
 
       let event = Sk.misceval.callsim(eventClass.Event, 2);

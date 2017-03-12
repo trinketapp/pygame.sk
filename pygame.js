@@ -60,6 +60,18 @@ var EventClass = function (gbl) {
   return Sk.misceval.buildClass(gbl, event$1, 'Event', []);
 };
 
+function PygameError() {
+  var o;
+  if (!(this instanceof PygameError)) {
+    o = Object.create(PygameError.prototype);
+    o.constructor.apply(o, arguments);
+    return o;
+  }
+  Sk.builtin.StandardError.apply(this, arguments);
+}
+
+Sk.abstr.setUpInheritance('PygameError', PygameError, Sk.builtin.StandardError);
+
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
   return typeof obj;
 } : function (obj) {
@@ -100,11 +112,71 @@ var _extends = Object.assign || function (target) {
   return target;
 };
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var slicedToArray = function () {
+  function sliceIterator(arr, i) {
+    var _arr = [];
+    var _n = true;
+    var _d = false;
+    var _e = undefined;
+
+    try {
+      for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {
+        _arr.push(_s.value);
+
+        if (i && _arr.length === i) break;
+      }
+    } catch (err) {
+      _d = true;
+      _e = err;
+    } finally {
+      try {
+        if (!_n && _i["return"]) _i["return"]();
+      } finally {
+        if (_d) throw _e;
+      }
+    }
+
+    return _arr;
+  }
+
+  return function (arr, i) {
+    if (Array.isArray(arr)) {
+      return arr;
+    } else if (Symbol.iterator in Object(arr)) {
+      return sliceIterator(arr, i);
+    } else {
+      throw new TypeError("Invalid attempt to destructure non-iterable instance");
+    }
+  };
+}();
+
 var notifiers = [];
 var queue = [];
 
 var blackList = new Set();
 var whiteList = new Set();
+
+var initialized = false;
 
 function eventConsumer(eventtype) {
   return function pygameEventListener(event) {
@@ -148,6 +220,16 @@ function isAllowed(e) {
   return true;
 }
 
+function throwIfNotInitialized() {
+  if (!initialized) {
+    throw new PygameError('video system not initialized');
+  }
+}
+
+function initialize() {
+  initialized = true;
+}
+
 var event_locs = {
   '__package__': Sk.builtin.none.none$,
   '__doc__': 'pygame module for interacting with events and queues',
@@ -158,15 +240,18 @@ var event_locs = {
   'pump': dud(Sk.builtin.none.none$),
 
   poll: function poll() {
+    throwIfNotInitialized();
     return queue.length ? queue.pop() : Sk.misceval.callsimOrSuspend(event_locs.Event, Sk.ffi.remapToPy(0));
   },
   post: function post(event) {
+    throwIfNotInitialized();
     Sk.builtin.pyCheckArgs('post', arguments, 1, 1);
     if (isAllowed(event)) {
       queue.push(event);
     }
   },
   get: function get$$1(type) {
+    throwIfNotInitialized();
     if (type) {
       var _ret = function () {
         var types = Sk.builtin.checkIterable(type) ? Sk.ffi.remapToJs(type) : [Sk.ffi.remapToJs(type)];
@@ -194,10 +279,12 @@ var event_locs = {
     }
   },
   clear: function clear() {
+    throwIfNotInitialized();
     queue.length = 0;
     return Sk.builtin.none.none$;
   },
   peek: function peek(type) {
+    throwIfNotInitialized();
     if (type) {
       if (Sk.builtin.checkIterable(type)) {
         var types = Sk.ffi.remapToJs(type);
@@ -210,6 +297,7 @@ var event_locs = {
     return queue.length ? queue[0] : Sk.misceval.callsimOrSuspend(event_locs.Event, Sk.ffi.remapToPy(0));
   },
   wait: function wait() {
+    throwIfNotInitialized();
     var chandler = null;
 
     var susp = new Sk.misceval.Suspension();
@@ -236,6 +324,7 @@ var event_locs = {
     return Sk.ffi.remapToPy(reveseLookup(Sk.ffi.remapToJs(type)));
   },
   set_blocked: function set_blocked(type) {
+    throwIfNotInitialized();
     Sk.builtin.pyCheckArgs('set_blocked', arguments, 1, 1);
     var types = Sk.builtin.checkIterable(type) ? Sk.ffi.remapToJs(type) : [Sk.ffi.remapToJs(type)];
     types.forEach(function (t) {
@@ -244,6 +333,7 @@ var event_locs = {
     return Sk.builtin.none.none$;
   },
   set_allowed: function set_allowed(type) {
+    throwIfNotInitialized();
     Sk.builtin.pyCheckArgs('set_allowed', arguments, 1, 1);
     var types = Sk.builtin.checkIterable(type) ? Sk.ffi.remapToJs(type) : [Sk.ffi.remapToJs(type)];
     types.forEach(function (t) {
@@ -252,6 +342,7 @@ var event_locs = {
     return Sk.builtin.none.none$;
   },
   get_blocked: function get_blocked(type) {
+    throwIfNotInitialized();
     Sk.builtin.pyCheckArgs('get_blocked', arguments, 1, 1);
     var jstype = Sk.ffi.remapToJs(type);
     return Sk.ffi.remapToPy(blackList.has(jstype));
@@ -777,37 +868,137 @@ function resetModifier() {
   modifier = 0;
 }
 
-var display = {
-  __doc__: 'pygame module to control the display window and screen',
-  __name__: 'pygame.display',
-  __package__: Sk.builtin.none.none$,
-  __PYGAMEinit__: notImplemented,
+// Surface((width, height), flags=0, depth=0, masks=None) -> Surface
+// Surface((width, height), flags=0, Surface) -> Surface
 
-  quit: dud(Sk.builtin.none.none$),
-  init: dud(Sk.builtin.none.none$),
-  update: dud(Sk.builtin.none.none$),
-  set_mode: dud(Sk.builtin.none.none$),
+var init$1 = function $__init__123$(self, size) {
+  Sk.builtin.pyCheckArgs('__init__', arguments, 2, 5, false, false);
 
-  get_caption: notImplemented,
-  mode_ok: notImplemented,
-  set_icon: notImplemented,
-  get_active: notImplemented,
-  iconify: notImplemented,
-  set_gamma: notImplemented,
-  set_palette: notImplemented,
-  get_wm_info: notImplemented,
-  set_gamma_ramp: notImplemented,
-  Info: notImplemented,
-  get_surface: notImplemented,
-  toggle_fullscreen: notImplemented,
-  get_driver: notImplemented,
-  set_caption: notImplemented,
-  get_init: notImplemented,
-  flip: notImplemented,
-  _PYGAME_C_API: notImplemented,
-  gl_get_attribute: notImplemented,
-  gl_set_attribute: notImplemented,
-  list_modes: notImplemented
+  var _Sk$ffi$remapToJs = Sk.ffi.remapToJs(size);
+
+  var _Sk$ffi$remapToJs2 = slicedToArray(_Sk$ffi$remapToJs, 2);
+
+  self.width = _Sk$ffi$remapToJs2[0];
+  self.height = _Sk$ffi$remapToJs2[1];
+
+
+  if (self.width < 0 || self.height < 0) {
+    throw new PygameError('Invalid resolution for Surface');
+  }
+
+  // ignoring other args.
+  return Sk.builtin.none.none$;
+};
+init$1.co_name = new Sk.builtins['str']('__init__');
+init$1.co_varnames = ['self', 'size', 'flags', 'depth', 'masks'];
+init$1.$defaults = [new Sk.builtin.int_(0), new Sk.builtin.int_(0), Sk.builtin.none.none$];
+
+var repr$1 = function $__repr__123$(self) {
+  var width = Sk.ffi.remapToJs(self.width);
+  var height = Sk.ffi.remapToJs(self.height);
+
+  return Sk.ffi.remapToPy('<Surface(' + width + 'x' + height + 'x32 SW)>');
+};
+repr$1.co_name = new Sk.builtins['str']('__repr__');
+repr$1.co_varnames = ['self'];
+
+function get_height(self) {
+  Sk.builtin.pyCheckArgs('get_height', arguments, 1, 1, false, false);
+
+  return self.height;
+}
+get_height.co_name = new Sk.builtins['str']('get_height');
+get_height.co_varnames = ['self'];
+
+function get_width(self) {
+  Sk.builtin.pyCheckArgs('get_width', arguments, 1, 1, false, false);
+
+  return self.width;
+}
+get_width.co_name = new Sk.builtins['str']('get_width');
+get_width.co_varnames = ['self'];
+
+function get_size(self) {
+  Sk.builtin.pyCheckArgs('get_size', arguments, 1, 1, false, false);
+
+  return Sk.builtin.tuple([self.width, self.height]);
+}
+get_size.co_name = new Sk.builtins['str']('get_size');
+get_size.co_varnames = ['self'];
+
+function get_flags() {
+  Sk.builtin.pyCheckArgs('get_flags', arguments, 1, 1, false, false);
+
+  return new Sk.builtin.int_(0);
+}
+get_flags.co_name = new Sk.builtins['str']('get_flags');
+get_flags.co_varnames = ['self'];
+
+var surface$1 = function $Surface$class_outer(gbl, loc) {
+  loc.__init__ = new Sk.builtins.function(init$1, gbl);
+  loc.__repr__ = new Sk.builtins.function(repr$1, gbl);
+
+  loc.get_width = new Sk.builtins.function(get_width, gbl);
+  loc.get_height = new Sk.builtins.function(get_width, gbl);
+  loc.get_size = new Sk.builtins.function(get_size, gbl);
+  loc.get_flags = new Sk.builtins.function(get_flags, gbl);
+
+  return;
+};
+
+surface$1.co_name = new Sk.builtins['str']('Surface');
+
+var SurfaceClass = function (gbl) {
+  return Sk.misceval.buildClass(gbl, surface$1, 'Surface', []);
+};
+
+function surface(locs) {
+  locs.Surface = SurfaceClass(locs);
+  locs.Surface.$isclass = true;
+  return locs;
+}
+
+var display = function (Surface) {
+  return {
+    __doc__: 'pygame module to control the display window and screen',
+    __name__: 'pygame.display',
+    __package__: Sk.builtin.none.none$,
+    __PYGAMEinit__: notImplemented,
+
+    quit: dud(Sk.builtin.none.none$),
+    init: function init() {
+      initialize();
+      return Sk.builtin.none.none$;
+    },
+
+    update: dud(Sk.builtin.none.none$),
+    set_mode: function set_mode(size) {
+      initialize();
+      return Sk.misceval.callsim(Surface, size);
+    },
+
+
+    get_caption: notImplemented,
+    mode_ok: notImplemented,
+    set_icon: notImplemented,
+    get_active: notImplemented,
+    iconify: notImplemented,
+    set_gamma: notImplemented,
+    set_palette: notImplemented,
+    get_wm_info: notImplemented,
+    set_gamma_ramp: notImplemented,
+    Info: notImplemented,
+    get_surface: notImplemented,
+    toggle_fullscreen: notImplemented,
+    get_driver: notImplemented,
+    set_caption: notImplemented,
+    get_init: notImplemented,
+    flip: notImplemented,
+    _PYGAME_C_API: notImplemented,
+    gl_get_attribute: notImplemented,
+    gl_set_attribute: notImplemented,
+    list_modes: notImplemented
+  };
 };
 
 var globalScope = typeof window !== 'undefined' ? window : global;
@@ -894,6 +1085,11 @@ function initializeHandlers(eventFilter, keydownListener, keyupListener) {
   addPygameEventListener(eventFilter, 'keydown', keydownListener);
 }
 
+function displayBuilder(locs) {
+  locs.display = makeModule(display(locs.Surface));
+  return locs;
+}
+
 var main = {
   init: function init(path, eventFilterPredicate, keydownListener, keyupListener) {
 
@@ -923,8 +1119,12 @@ var main = {
   main: function main() {
     clearHandlers();
     resetModifier();
-    return remapInner(assign({
-      init: dud,
+    return remapInner(displayBuilder(surface(assign({
+      init: function init() {
+        initialize();
+        return new Sk.builtin.tuple([6, 0]);
+      },
+
       quit: dud,
 
       error: notImplemented,
@@ -936,10 +1136,9 @@ var main = {
       encode_string: notImplemented,
       encode_file_quit: notImplemented,
 
-      display: makeModule(display),
       locals: makeModule(locals),
       event: makeModule(event())
-    }, locals));
+    }, locals))));
   },
 
   locals: remapInner(locals),

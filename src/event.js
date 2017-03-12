@@ -2,12 +2,15 @@ import { notImplemented, dud } from './shared.js';
 import { mapEvent, reveseLookup } from './locals.js';
 import Sk from './skulpt.js';
 import EventClass from './eventclass.js';
+import { PygameError } from './exceptions.js';
 
 const notifiers = [];
 let queue = [];
 
 const blackList = new Set();
 const whiteList = new Set();
+
+var initialized = false;
 
 function eventConsumer(eventtype) {
   return function pygameEventListener(event) {
@@ -41,6 +44,20 @@ function isAllowed(e) {
   return true;
 }
 
+function throwIfNotInitialized() {
+  if (!initialized) {
+    throw new PygameError('video system not initialized');
+  }
+}
+
+function initialize() {
+  initialized = true;
+}
+
+function unInitialize() {
+  initialized = false;
+}
+
 const event_locs = {
   '__package__': Sk.builtin.none.none$,
   '__doc__': 'pygame module for interacting with events and queues',
@@ -51,15 +68,18 @@ const event_locs = {
   'pump': dud(Sk.builtin.none.none$),
 
   poll() {
+    throwIfNotInitialized();
     return queue.length ? queue.pop() : Sk.misceval.callsimOrSuspend(event_locs.Event, Sk.ffi.remapToPy(0));
   },
   post(event) {
+    throwIfNotInitialized();
     Sk.builtin.pyCheckArgs('post', arguments, 1, 1);
     if (isAllowed(event)) {
       queue.push(event);
     }
   },
   get(type) {
+    throwIfNotInitialized();
     if (type) {
       let types = Sk.builtin.checkIterable(type) ? Sk.ffi.remapToJs(type) : [Sk.ffi.remapToJs(type)];
 
@@ -77,10 +97,12 @@ const event_locs = {
     }
   },
   clear() {
+    throwIfNotInitialized();
     queue.length = 0;
     return Sk.builtin.none.none$;
   },
   peek(type) {
+    throwIfNotInitialized();
     if (type) {
       if (Sk.builtin.checkIterable(type)) {
         let types = Sk.ffi.remapToJs(type);
@@ -93,6 +115,7 @@ const event_locs = {
     return queue.length ? queue[0] : Sk.misceval.callsimOrSuspend(event_locs.Event, Sk.ffi.remapToPy(0));
   },
   wait() {
+    throwIfNotInitialized();
     let chandler = null;
 
     let susp = new Sk.misceval.Suspension();
@@ -116,18 +139,21 @@ const event_locs = {
   },
   event_name: (type) => Sk.ffi.remapToPy(reveseLookup(Sk.ffi.remapToJs(type))),
   set_blocked(type) {
+    throwIfNotInitialized();
     Sk.builtin.pyCheckArgs('set_blocked', arguments, 1, 1);
     let types = Sk.builtin.checkIterable(type) ? Sk.ffi.remapToJs(type) : [Sk.ffi.remapToJs(type)];
     types.forEach(t => blackList.add(t));
     return Sk.builtin.none.none$;
   },
   set_allowed(type) {
+    throwIfNotInitialized();
     Sk.builtin.pyCheckArgs('set_allowed', arguments, 1, 1);
     let types = Sk.builtin.checkIterable(type) ? Sk.ffi.remapToJs(type) : [Sk.ffi.remapToJs(type)];
     types.forEach(t => whiteList.add(t));
     return Sk.builtin.none.none$;
   },
   get_blocked(type) {
+    throwIfNotInitialized();
     Sk.builtin.pyCheckArgs('get_blocked', arguments, 1, 1);
     let jstype = Sk.ffi.remapToJs(type);
     return Sk.ffi.remapToPy(blackList.has(jstype));
@@ -141,7 +167,7 @@ export function clearHandlers() {
   notifiers.length = 0;
 }
 
-export { eventIsOf, eventConsumer };
+export { eventIsOf, eventConsumer, initialize, unInitialize, throwIfNotInitialized };
 
 export default function event() {
   event_locs.Event =  EventClass(event_locs);
