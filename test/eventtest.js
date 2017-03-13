@@ -73,10 +73,10 @@ describe('event', () => {
     });
 
     it('should filter events based on the predicate', () => {
-      initialize();
-
       let keyDown;
       init('', e => e.key == 'b', e => keyDown = e);
+
+      initialize();
 
       keyDown({ code: 'KeyA', key: 'a', getModifierState() { return true; }});
       keyDown({ code: 'KeyB', key: 'b', getModifierState() { return true; }});
@@ -90,9 +90,10 @@ describe('event', () => {
   describe('modifier tests', () => {
 
     it('should add the capslock modifier when it\'s on', () => {
-      initialize();
       let keyDown;
       init('', null, (eventHandler) => { keyDown = eventHandler; },  () => { });
+
+      initialize();
 
       keyDown({ code: 'KeyA', key: 'a', getModifierState() { return true; } });
       let dict = Sk.ffi.remapToJs(Sk.abstr.gattr(Sk.misceval.callsim(eventClass.poll), 'dict', false));
@@ -100,9 +101,10 @@ describe('event', () => {
     });
 
     it('should add the shift modifier when it\'s held', () => {
-      initialize();
       let keyDown;
       init('', null, (eventHandler) => { keyDown = eventHandler; }, () => { });
+
+      initialize();
 
       keyDown({ code: 'ShiftLeft', key: '', getModifierState() { return false; } });
       keyDown({ code: 'KeyA', key: 'A', getModifierState() { return false; } });

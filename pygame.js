@@ -272,6 +272,10 @@ function initialize() {
   initialized = true;
 }
 
+function unInitialize() {
+  initialized = false;
+}
+
 var display = function (Surface, globalScope) {
   return {
     __doc__: 'pygame module to control the display window and screen',
@@ -1119,6 +1123,8 @@ var main = {
         path: path + '/event.js'
       }
     });
+
+    unInitialize();
   },
   main: function main() {
     clearHandlers();

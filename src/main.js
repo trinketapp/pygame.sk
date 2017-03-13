@@ -1,6 +1,6 @@
 import locals, { resetModifier } from './locals.js';
-import display, { surface } from './display.js';
-import event, { clearHandlers, eventIsOf, eventConsumer, initialize } from './event.js';
+import display, { surface, unInitialize, initialize } from './display.js';
+import event, { clearHandlers, eventIsOf, eventConsumer } from './event.js';
 import { dud, notImplemented } from './shared.js';
 import Sk from './skulpt.js';
 
@@ -108,6 +108,8 @@ export default {
         path: `${path}/event.js`
       }
     });
+
+    unInitialize();
   },
   main() {
     clearHandlers();
