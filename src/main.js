@@ -81,7 +81,7 @@ function initializeHandlers(eventFilter, keydownListener, keyupListener) {
 }
 
 function displayBuilder(locs) {
-  locs.display = makeModule(display(locs.Surface));
+  locs.display = makeModule(display(locs.Surface, globalScope));
   return locs;
 }
 

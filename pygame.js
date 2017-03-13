@@ -241,7 +241,7 @@ var surface$1 = function $Surface$class_outer(gbl, loc) {
   loc.__repr__ = new Sk.builtins.function(repr$1, gbl);
 
   loc.get_width = new Sk.builtins.function(get_width, gbl);
-  loc.get_height = new Sk.builtins.function(get_width, gbl);
+  loc.get_height = new Sk.builtins.function(get_height, gbl);
   loc.get_size = new Sk.builtins.function(get_size, gbl);
   loc.get_flags = new Sk.builtins.function(get_flags, gbl);
 
@@ -272,7 +272,7 @@ function initialize() {
   initialized = true;
 }
 
-var display = function (Surface) {
+var display = function (Surface, globalScope) {
   return {
     __doc__: 'pygame module to control the display window and screen',
     __name__: 'pygame.display',
@@ -288,7 +288,9 @@ var display = function (Surface) {
     update: dud(Sk.builtin.none.none$),
     set_mode: function set_mode(size) {
       initialize();
-      return Sk.misceval.callsim(Surface, size);
+      var lsize = size ? size : new Sk.builtin.tuple([globalScope.innerWidth, globalScope.innerHeight]);
+
+      return Sk.misceval.callsim(Surface, lsize);
     },
 
     get_init: function get_init() {
@@ -1088,7 +1090,7 @@ function initializeHandlers(eventFilter, keydownListener, keyupListener) {
 }
 
 function displayBuilder(locs) {
-  locs.display = makeModule(display(locs.Surface));
+  locs.display = makeModule(display(locs.Surface, globalScope));
   return locs;
 }
 

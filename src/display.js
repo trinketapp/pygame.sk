@@ -27,7 +27,7 @@ function unInitialize() {
 
 export { surface, initialize, unInitialize, throwIfNotInitialized };
 
-export default function (Surface) {
+export default function (Surface, globalScope) {
   return {
     __doc__: 'pygame module to control the display window and screen',
     __name__: 'pygame.display',
@@ -42,7 +42,9 @@ export default function (Surface) {
     update: dud(Sk.builtin.none.none$),
     set_mode(size) {
       initialize();
-      return Sk.misceval.callsim(Surface, size);
+      let lsize = size ? size : new Sk.builtin.tuple([globalScope.innerWidth, globalScope.innerHeight]);
+
+      return Sk.misceval.callsim(Surface, lsize);
     },
     get_init: function() {
       return Sk.ffi.remapToPy(initialized);

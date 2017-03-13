@@ -66,7 +66,7 @@ var surface = (function $Surface$class_outer(gbl, loc) {
   loc.__repr__ = new Sk.builtins.function(repr, gbl);
 
   loc.get_width = new Sk.builtins.function(get_width, gbl);
-  loc.get_height = new Sk.builtins.function(get_width, gbl);
+  loc.get_height = new Sk.builtins.function(get_height, gbl);
   loc.get_size = new Sk.builtins.function(get_size, gbl);
   loc.get_flags = new Sk.builtins.function(get_flags, gbl);
 
