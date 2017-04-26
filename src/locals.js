@@ -474,7 +474,101 @@ export function reveseLookup (type) {
   return  'Unknown';
 }
 
+const keyKeyCodeLocationCodeMap = {
+  //special keys with location
+  'shift,16,1': 'ShiftLeft',
+  'shift,16,2': 'ShiftRight',
+  'control,17,1': 'ControlLeft',
+  'control,17,2': 'ControlRight',
+  'alt,18,1': 'AltLeft',
+  'alt,18,2': 'AltRight',
+  'win,91,1': 'MetaLeft',
+  'win,91,2': 'MetaRight',
+  // other keys
+  'f12,123,0': 'F12',
+  'f11,122,0': 'F11',
+  'f10,121,0': 'F10',
+  'f9,120,0': 'F9',
+  'f8,119,0': 'F8',
+  'f7,118,0': 'F7',
+  'f6,117,0': 'F6',
+  'f5,116,0': 'F5',
+  'f4,115,0': 'F4',
+  'f3,114,0': 'F3',
+  'f2,113,0': 'F2',
+  'f1,112,0': 'F1',
+  'esc,27,0': 'Escape',
+  'enter,13,0': 'Enter',
+  'capslock,20,0': 'CapsLock',
+  'tab,9,0': 'Tab',
+  'backspace,8,0': 'Backspace',
+  'down,40,0': 'ArrowDown',
+  'right,39,0': 'ArrowRight',
+  'up,38,0': 'ArrowUp',
+  'left,37,0': 'ArrowLeft',
+  '=,187,0': 'Equals',
+  '-,189,0': 'Minus',
+  '0,48,0': 'Digit0',
+  '9,57,0': 'Digit9',
+  '8,56,0': 'Digit8',
+  '7,55,0': 'Digit7',
+  '6,54,0': 'Digit6',
+  '5,53,0': 'Digit5',
+  '4,52,0': 'Digit4',
+  '3,51,0': 'Digit3',
+  '2,50,0': 'Digit2',
+  '1,49,0': 'Digit1',
+  '`,192,0': 'IntlBackslash',
+  '/,191,0': 'Slash',
+  '.,190,0': 'Period',
+  ',,188,0': 'Comma',
+  'm,77,0': 'KeyM',
+  'n,78,0': 'KeyN',
+  'b,66,0': 'KeyB',
+  'v,86,0': 'KeyV',
+  'c,67,0': 'KeyC',
+  'x,88,0': 'KeyX',
+  'z,90,0': 'KeyZ',
+  '\,226,0': 'BackSlash',
+  '\,220,0': 'BackSlash',
+  '\',222,0': 'Quote',
+  ';,186,0': 'SemiColon',
+  'l,76,0': 'KeyL',
+  'k,75,0': 'KeyK',
+  'j,74,0': 'KeyJ',
+  'h,72,0': 'KeyH',
+  'g,71,0': 'KeyG',
+  'f,70,0': 'KeyF',
+  'd,68,0': 'KeyD',
+  's,83,0': 'KeyS',
+  'a,65,0': 'KeyA',
+  '],221,0': 'BracketRight',
+  '[,219,0': 'BracketLeft',
+  'p,80,0': 'KeyP',
+  'o,79,0': 'KeyO',
+  'i,73,0': 'KeyI',
+  'u,85,0': 'KeyU',
+  'y,89,0': 'KeyY',
+  't,84,0': 'KeyT',
+  'r,82,0': 'KeyR',
+  'e,69,0': 'KeyE',
+  'w,87,0': 'KeyW',
+  'q,81,0': 'KeyQ'
+}
+
+function normalizeEventCode(jsevent) {
+  if (!jsevent.code) {
+    let code = keyKeyCodeLocationCodeMap[[jsevent.key.toLowerCase(), jsevent.keyCode, jsevent.location].toString()];
+    if (code) {
+      jsevent.code = code
+    }
+  }
+
+  return jsevent;
+}
+
 export function mapEvent (eventtype, jsevent) {
+  jsevent = normalizeEventCode(jsevent);
   return Sk.misceval.callsimOrSuspend(event().Event, Sk.ffi.remapToPy(typeMap[eventtype]), Sk.ffi.remapToPy({
     unicode: jsevent.key.length === 1 ? jsevent.key : '',
     key: keyMap[jsevent.code],
