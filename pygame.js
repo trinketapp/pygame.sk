@@ -1004,8 +1004,8 @@ var keyKeyCodeLocationCodeMap = {
   'control,17,2': 'ControlRight',
   'alt,18,1': 'AltLeft',
   'alt,18,2': 'AltRight',
-  'win,91,1': 'MetaLeft',
-  'win,91,2': 'MetaRight',
+  'win,92,1': 'MetaLeft',
+  'win,92,2': 'MetaRight',
   // other keys
   'f12,123,0': 'F12',
   'f11,122,0': 'F11',

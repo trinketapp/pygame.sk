@@ -554,13 +554,13 @@ const keyKeyCodeLocationCodeMap = {
   'e,69,0': 'KeyE',
   'w,87,0': 'KeyW',
   'q,81,0': 'KeyQ'
-}
+};
 
 function normalizeEventCode(jsevent) {
   if (!jsevent.code) {
     let code = keyKeyCodeLocationCodeMap[[jsevent.key.toLowerCase(), jsevent.keyCode, jsevent.location].toString()];
     if (code) {
-      jsevent.code = code
+      jsevent.code = code;
     }
   }
 
