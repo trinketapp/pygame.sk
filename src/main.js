@@ -95,7 +95,7 @@ export default {
     Sk.externalLibraries = Sk.externalLibraries || {};
 
     Object.assign(Sk.externalLibraries, {
-      "./pygame/__init__.js": {
+      './pygame/__init__.js': {
         path: `${path}/__init__.js`,
       },
       './pygame/locals.js"': {

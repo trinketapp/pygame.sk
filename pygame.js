@@ -1204,16 +1204,16 @@ var main = {
     Sk.externalLibraries = Sk.externalLibraries || {};
 
     _extends(Sk.externalLibraries, {
-      pygame: {
+      './pygame/__init__.js': {
         path: path + '/__init__.js'
       },
-      'pygame.locals': {
+      './pygame/locals.js"': {
         path: path + '/locals.js'
       },
-      'pygame.display': {
+      './pygame/display.js': {
         path: path + '/display.js'
       },
-      'pygame.event': {
+      './pygame/event.js': {
         path: path + '/event.js'
       }
     });
