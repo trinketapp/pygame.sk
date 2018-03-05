@@ -482,8 +482,8 @@ const keyKeyCodeLocationCodeMap = {
   'control,17,2': 'ControlRight',
   'alt,18,1': 'AltLeft',
   'alt,18,2': 'AltRight',
-  'win,92,1': 'MetaLeft',
-  'win,92,2': 'MetaRight',
+  'win,91,1': 'MetaLeft',
+  'win,91,2': 'MetaRight',
   // other keys
   'f12,123,0': 'F12',
   'f11,122,0': 'F11',
@@ -554,13 +554,13 @@ const keyKeyCodeLocationCodeMap = {
   'e,69,0': 'KeyE',
   'w,87,0': 'KeyW',
   'q,81,0': 'KeyQ'
-}
+};
 
 function normalizeEventCode(jsevent) {
   if (!jsevent.code) {
     let code = keyKeyCodeLocationCodeMap[[jsevent.key.toLowerCase(), jsevent.keyCode, jsevent.location].toString()];
     if (code) {
-      jsevent.code = code
+      jsevent.code = code;
     }
   }
 
